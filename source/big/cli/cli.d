@@ -1,10 +1,11 @@
 import std.stdio;
 
-import argumentParser;
+import application;
 
 string temp;
 
-void main(string[] args)
+int main(string[] args)
 {
-	auto parser = new ArgumentParser;
+	auto application = new Application;
+	return application.run(args);
 }
