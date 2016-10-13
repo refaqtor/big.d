@@ -1,0 +1,45 @@
+{
+	"name" : "big-d",
+	"description": "MVC Web framework for D",
+	"copyright": "Copyright © 2016, LLC CERERIS",
+	"license": "MIT",
+	"authors": [
+		"LLC CERERIS"
+	],
+	"sourcePaths": ["source"],
+	
+	"dependencies": {
+		"vibe-d": "~>0.7.30-rc.1",
+		"hibernated": "~>0.2.31",
+		":cli": "*",
+		":test": "*"
+	},
+	
+	"targetType" : "library",
+	"targetName": "bigd",
+	
+	"subPackages": [
+		{
+			"name": "cli",
+			"sourcePaths": ["source/big/cli/"],
+			"targetType": "executable",
+			"targetPath": "bin",
+			"targetName": "cli",
+			"mainSourceFile" : "source/big/cli/cli.d"
+		},
+		{
+			"name": "test",
+			"sourcePaths": ["tests/", "source/"],
+			"excludedSourceFiles": [
+				"source/big/cli/cli.d"
+			],
+			"mainSourceFile" : "tests/test.d",
+			"targetType": "executable",
+			"targetPath": "bin",
+			"targetName": "test",
+			"buildOptions": [
+				"unittests"
+			]
+		}
+	]
+}
