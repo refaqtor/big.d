@@ -6,7 +6,7 @@
 	"authors": [
 		"LLC CERERIS"
 	],
-	"sourcePaths": ["source"],
+	"sourcePaths": ["./source"],
 	
 	"dependencies": {
 		"vibe-d": "~>0.7.30-rc.1",
@@ -21,25 +21,31 @@
 	"subPackages": [
 		{
 			"name": "cli",
-			"sourcePaths": ["source/big/cli/"],
+			"sourcePaths": ["./source/big/console/"],
 			"targetType": "executable",
 			"targetPath": "bin",
 			"targetName": "cli",
-			"mainSourceFile" : "source/big/cli/cli.d"
+			"mainSourceFile" : "./source/big/console/consolelineinterface.d",
+			"dependencies": {
+				"colorize": "~>1.0.5"
+			}
 		},
 		{
 			"name": "test",
-			"sourcePaths": ["tests/", "source/"],
+			"sourcePaths": ["./tests/", "./source/"],
 			"excludedSourceFiles": [
-				"source/big/cli/cli.d"
+				"./source/big/console/consolelineinterface.d"
 			],
-			"mainSourceFile" : "tests/test.d",
+			"mainSourceFile" : "./tests/test.d",
 			"targetType": "executable",
 			"targetPath": "bin",
 			"targetName": "test",
 			"buildOptions": [
 				"unittests"
-			]
+			],
+			"dependencies": {
+				"colorize": "~>1.0.5"
+			}
 		}
 	]
 }
