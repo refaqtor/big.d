@@ -1,6 +1,6 @@
-////module big.console.application;
-//
-//abstract interface Application{
-//	public:
-//		int run(string[] arguments);
-//}
+module big.console.application;
+
+abstract interface Application{
+	public:
+		int run(string[] arguments);
+}

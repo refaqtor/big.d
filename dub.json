@@ -34,7 +34,7 @@
 			"name": "test",
 			"sourcePaths": ["./tests/", "./source/"],
 			"excludedSourceFiles": [
-				"./source/big/console/consolelineinterface.d"
+				"source/big/console/consolelineinterface.d"
 			],
 			"mainSourceFile" : "./tests/test.d",
 			"targetType": "executable",

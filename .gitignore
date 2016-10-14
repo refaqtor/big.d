@@ -1,3 +1,5 @@
 /libbigd.a
 /dub.selections.json
 /.project
+/bin
+libbigd.a
