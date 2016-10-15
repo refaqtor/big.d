@@ -32,11 +32,11 @@
 		},
 		{
 			"name": "test",
-			"sourcePaths": ["./tests/", "./source/"],
+			"sourcePaths": ["./test/", "./source/"],
 			"excludedSourceFiles": [
 				"source/big/console/consolelineinterface.d"
 			],
-			"mainSourceFile" : "./tests/test.d",
+			"mainSourceFile" : "./test/main.d",
 			"targetType": "executable",
 			"targetPath": "bin",
 			"targetName": "test",
