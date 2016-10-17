@@ -6,7 +6,15 @@
 
 module test.component.console.tester.applicationtester;
 
+import std.stdio;
+import std.array;
+import std.conv;
+
 import big.component.console.application;
+import big.component.console.input.inputinterface;
+import big.component.console.input.arrayinput;
+import big.component.console.output.outputinterface;
+import big.component.console.output.streamoutput;
 
 class ApplicationTester{
 	public:
@@ -14,25 +22,27 @@ class ApplicationTester{
 			this.application = application;
 		}
 		
-		int run(){
+		int run(string[string] input, string[string] options = null){
+			this.input = new ArrayInput(input);
 			
-		}
-//		    public function run(array $input, $options = array())
-//    {
-//        $this->input = new ArrayInput($input);
-//        if (isset($options['interactive'])) {
-//            $this->input->setInteractive($options['interactive']);
-//        }
-//        $this->captureStreamsIndependently = array_key_exists('capture_stderr_separately', $options) && $options['capture_stderr_separately'];
-//        if (!$this->captureStreamsIndependently) {
-//            $this->output = new StreamOutput(fopen('php://memory', 'w', false));
-//            if (isset($options['decorated'])) {
-//                $this->output->setDecorated($options['decorated']);
-//            }
-//            if (isset($options['verbosity'])) {
-//                $this->output->setVerbosity($options['verbosity']);
-//            }
-//        } else {
+			if("interactive" in options){
+				this.input.setInteractive(options["interactive"] == "true" ? true : false);
+			}
+			
+			this.captureStreamsIndependently = !(("capture_stderr_separately" in options) is null) && options["capture_stderr_separately"] == "true";
+			
+			if (!this.captureStreamsIndependently) {
+	            this.output = new StreamOutput(File.tmpfile());
+	            
+	            if("decorated" in options){
+	                this.output.setDecorated(options["decorated"] == "true");
+	            }
+	            
+	            if("verbosity" in options){
+	                this.output.setVerbosity(to!int(options["verbosity"]));
+	            }
+	        } 
+			else {
 //            $this->output = new ConsoleOutput(
 //                isset($options['verbosity']) ? $options['verbosity'] : ConsoleOutput::VERBOSITY_NORMAL,
 //                isset($options['decorated']) ? $options['decorated'] : null
@@ -49,19 +59,32 @@ class ApplicationTester{
 //            $streamProperty = $reflectedParent->getProperty('stream');
 //            $streamProperty->setAccessible(true);
 //            $streamProperty->setValue($this->output, fopen('php://memory', 'w', false));
-//        }
-//        return $this->statusCode = $this->application->run($this->input, $this->output);
-//    }
+	        }	
+			
+			this.statusCode = this.application.run(this.input, this.output);
+			return this.statusCode;
+		}
 
 		string getDisplay(bool normalize = false){
-//        rewind($this->output->getStream());
-//        $display = stream_get_contents($this->output->getStream());
-	        if(normalize) {
+			(cast(StreamOutput) this.output).getStream().rewind();
+			StreamOutput streamOutput = cast(StreamOutput) this.output;
+			
+			string display;
+			foreach(line; streamOutput.getStream.byLine()){
+				display ~= line;
+			}
+			
+		    if(normalize) {
 //            $display = str_replace(PHP_EOL, "\n", $display);
 	        }
-//        return $display;
+		    
+	        return display;
 	    }
 		
 	private:
-		Application application;	
+		InputInterface input;
+		OutputInterface output;
+		Application application;
+		int statusCode;	
+		bool captureStreamsIndependently;
 }

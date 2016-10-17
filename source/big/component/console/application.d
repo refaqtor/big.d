@@ -20,11 +20,17 @@ import std.format: format;
 import std.string;
 import std.stdio;
 import std.array;
+import std.algorithm.sorting: sort;
+import std.algorithm.iteration: uniq;
+import std.regex;
+import std.algorithm.searching: canFind;
 
 import big.component.console.command.command;
 import big.component.console.command.helpcommand;
 import big.component.console.command.listcommand;
 import big.component.console.exception.commandnotfoundexception;
+import big.component.console.input.inputinterface;
+import big.component.console.output.outputinterface;
 
 alias Command[string] CommandMap;
 
@@ -146,6 +152,108 @@ class Application{
 		void setCatchExceptions(bool state){
 	        this.catchExceptions = state;
 	    }
+		
+		string[] getNamespaces(){
+	        string[] namespaces;
+	        
+	        foreach(command; this.all().values()) {
+	            namespaces ~= this.extractAllNamespaces(command.getName());
+	            foreach(commandAlias ; command.getAliases()){
+	                namespaces ~= this.extractAllNamespaces(commandAlias);
+	            }
+	        }
+	        
+	        namespaces = uniq(sort(namespaces)).array;
+	        return namespaces;
+	    }
+		
+		string findNamespace(string namespace){
+	        auto allNamespaces = this.getNamespaces();
+			auto namespaseRegex = replaceAll!(delegate(Captures!(string) m){return m.hit ~ "[^:]*";})(namespace, regex("([^:]+|)"));
+			string[] namespaces;
+			foreach(name; allNamespaces){
+				namespaces ~= matchFirst(name, namespaseRegex).array;	
+			}
+			
+	        if(namespace.empty){
+	            auto message = format("There are no commands defined in the %s namespace.", namespace);
+	            auto alternatives = this.findAlternatives(namespace, allNamespaces);
+	            
+	            if(alternatives){
+	                if (1 == count($alternatives)) {
+	                    $message .= "\n\nDid you mean this?\n    ";
+	                } else {
+	                    $message .= "\n\nDid you mean one of these?\n    ";
+	                }
+	                
+	                message ~= implode("\n    ", $alternatives);
+	            }
+
+	            throw new CommandNotFoundException(message, alternatives);
+			}
+	        
+	        auto exact = canFind(namespaces, namespace);
+	        if(namespaces.length > 1 && !exact) {
+	            throw new CommandNotFoundException(format("The namespace %s is ambiguous (%s).", namespace, namespaces.join(",")));
+	        }
+	        
+	        if(exact){
+	        	return namespace;
+	        }
+	        else{
+	        	if(namespaces.empty){
+	        		return "";
+	        	}
+	        	else{
+	        		return namespaces[0];
+	        	}
+	        }
+	    }
+		
+		int run(InputInterface input = null, OutputInterface output = null){
+			int exitCode;
+			
+			//        putenv('LINES='.$this->terminal->getHeight());
+//        putenv('COLUMNS='.$this->terminal->getWidth());
+//        if (null === $input) {
+//            $input = new ArgvInput();
+//        }
+//        if (null === $output) {
+//            $output = new ConsoleOutput();
+//        }
+//        $this->configureIO($input, $output);
+//        try {
+//            $exitCode = $this->doRun($input, $output);
+//        } catch (\Exception $e) {
+//            if (!$this->catchExceptions) {
+//                throw $e;
+//            }
+//            if ($output instanceof ConsoleOutputInterface) {
+//                $this->renderException($e, $output->getErrorOutput());
+//            } else {
+//                $this->renderException($e, $output);
+//            }
+//            $exitCode = $e->getCode();
+//            if (is_numeric($exitCode)) {
+//                $exitCode = (int) $exitCode;
+//                if (0 === $exitCode) {
+//                    $exitCode = 1;
+//                }
+//            } else {
+//                $exitCode = 1;
+//            }
+//        }
+//        if ($this->autoExit) {
+//            if ($exitCode > 255) {
+//                $exitCode = 255;
+//            }
+//            exit($exitCode);
+//        }
+//        return $exitCode;
+//    }
+			
+			return exitCode;
+		}
 	
 	private:
 		Command[] getDefaultCommands(){
@@ -163,6 +271,24 @@ class Application{
 			}
 			return "";
 	    }
+		
+		string[] extractAllNamespaces(string name){
+	        auto chunks = name.split(":");
+	        if(chunks.length > 0){
+	        	chunks = chunks[0..$-1];
+	        }
+	        
+	        string[] namespaces;
+	        
+	        foreach(chunk; chunks){
+	            if(!namespaces.empty) {
+	                namespaces ~= ':'~ chunk;
+	            } else {
+		            namespaces ~= chunk;
+	            }
+	        }
+	        return namespaces;
+	    }		
 			
 	private:
 		string applicationName;

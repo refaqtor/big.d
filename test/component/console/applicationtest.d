@@ -8,8 +8,10 @@ import std.stdio;
 
 import big.component.console.application;
 import big.component.console.command.helpcommand;
+import test.component.console.command.barbuccommand;
 import test.component.console.command.foocommand;
 import test.component.console.command.foo1command;
+import test.component.console.command.foo2command;
 import test.component.console.command.foo5command;
 import test.component.console.tester.applicationtester;
 
@@ -114,6 +116,73 @@ unittest{
 	application.setCatchExceptions(false);
 	
 	auto tester = new ApplicationTester(application);
-	tester.run(["h":true, "-q": true], ["decorated": false]);
+	tester.run(["h": "true", "-q": "true"], ["decorated": "false"]);
     assert(tester.getDisplay(true) == "");
+}
+
+/// get invalid command test
+unittest{
+	auto application = new Application;
+	bool check = false;	
+    
+    try{
+		application.get("foofoo");
+	}
+	catch (Exception e) {
+		check = true;
+	}
+	
+	assert(check, "this() get invalid command throw exception");
+}
+
+/// get namespaces test
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	application.add(new Foo1Command);
+	assert(application.getNamespaces() == ["foo"], ".getNamespaces() returns an array of unique used namespaces");
+}
+
+/// find namespace test
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	assert(application.findNamespace("foo") == "foo", ".findNamespace() returns the given namespace if it exists");
+	assert(application.findNamespace("f") == "foo", ".findNamespace() finds a namespace given an abbreviation");
+    
+    application.add(new Foo2Command);
+    assert(application.findNamespace("foo") == "foo", ".findNamespace() returns the given namespace if it exists");
+}
+
+/// find namespace with subnamespaces
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	application.add(new Foo2Command);
+	assert(application.findNamespace("foo") == "foo", ".findNamespace() returns commands even if the commands are only contained in subnamespaces");
+}
+
+/// find ambiguous namespace
+unittest{
+	auto application = new Application;
+	bool check = false;
+	
+	application.add(new BarBucCommand);
+	application.add(new FooCommand);
+	application.add(new Foo2Command);
+    
+    try{
+		application.findNamespace("f");
+	}
+	catch (Exception e) {
+		check = true;
+	}
+	
+	assert(check, ".add the namespace 'f' is ambiguous (foo, foo1).");
+}
+
+/// find invalid namespace test
+unittest{
+	auto application = new Application;
+	application.findNamespace("bar");
 }
