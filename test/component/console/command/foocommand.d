@@ -13,6 +13,6 @@ class FooCommand: Command{
 		override void configure(){
 			this.setName("foo:bar");
 //			this.setDescription("The foo:bar command");
-//            this.setAliases(["afoobar"]);
+            this.setAliases(["afoobar"]);
 		}
 }

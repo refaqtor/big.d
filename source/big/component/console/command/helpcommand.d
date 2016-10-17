@@ -9,6 +9,11 @@ module big.component.console.command.helpcommand;
 import big.component.console.command.command;
 
 class HelpCommand: Command{
+	public:
+		void setCommand(Command command){
+	        this.command = command;
+	    }
+		
 	protected:
 		override void configure(){
 			//			$this->ignoreValidationErrors();
@@ -29,4 +34,7 @@ class HelpCommand: Command{
 			//            )
 			//        ;
 		}
+		
+	private:
+		Command command;	
 }

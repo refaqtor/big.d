@@ -24,6 +24,7 @@ import std.array;
 import big.component.console.command.command;
 import big.component.console.command.helpcommand;
 import big.component.console.command.listcommand;
+import big.component.console.exception.commandnotfoundexception;
 
 alias Command[string] CommandMap;
 
@@ -50,9 +51,11 @@ class Application{
 //            throw new LogicException(sprintf('Command class "%s" is not correctly initialized. You probably forgot to call the parent constructor.', get_class($command)));
 //        }
 	        this.commandMap[command.getName()] = command;
-//        foreach ($command->getAliases() as $alias) {
-//            $this->commands[$alias] = $command;
-//        }
+	        
+	        foreach(commandAlias; command.getAliases()) {
+				this.commandMap[commandAlias] = command;
+			}
+	        
 	        return command;
 		}
 		
@@ -119,6 +122,30 @@ class Application{
 			
 			return false;
 	    }
+		
+		Command get(string name){
+			if(!(name in this.commandMap)){
+				throw new CommandNotFoundException(format("The command %s does not exist.", name));
+			}
+			
+			auto command = this.commandMap[name];
+			if(this.wantHelps){
+				this.wantHelps = false;
+				auto helpCommand = cast(HelpCommand)this.get("help");
+				helpCommand.setCommand(command);
+				return helpCommand;
+			}
+			
+			return command;
+		}
+		
+		void setAutoExit(bool state){
+	        this.autoExit = state;
+	    }
+		
+		void setCatchExceptions(bool state){
+	        this.catchExceptions = state;
+	    }
 	
 	private:
 		Command[] getDefaultCommands(){
@@ -140,5 +167,8 @@ class Application{
 	private:
 		string applicationName;
 		string applicationVersion;
+		bool wantHelps = false;
+		bool autoExit = true;
+		bool catchExceptions = true;
 		CommandMap commandMap;
 }

@@ -51,6 +51,19 @@ class Command{
 	        this.name = name;
 	        return this;
 		}
+		
+		string[] getAliases(){
+	        return this.aliases;
+	    }
+		
+		Command setAliases(string[] aliases){
+	        foreach(commandAlias; aliases){
+	            this.validateName(commandAlias);
+	        }
+	        
+	        this.aliases = aliases;
+	        return this;
+	    }
 	
 	protected:
 		void configure(){}
@@ -65,4 +78,5 @@ class Command{
 	private:
 		Application application;
 		string name;	
+		string[] aliases;
 }

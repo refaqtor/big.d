@@ -11,6 +11,7 @@ import big.component.console.command.helpcommand;
 import test.component.console.command.foocommand;
 import test.component.console.command.foo1command;
 import test.component.console.command.foo5command;
+import test.component.console.tester.applicationtester;
 
 /// Constructor test
 unittest{
@@ -99,18 +100,20 @@ unittest{
 	assert(application.has("list"), ".has() returns true if a named command is registered"); 
     assert(!application.has("afoobar"), ".has() returns false if a named command is not registered");
     
-    application.add(new FooCommand);
+    auto foo = new FooCommand;
+    application.add(foo);
 	assert(application.has("afoobar"), ".has() returns true if an alias is registered");
 	assert(application.get("foo:bar") == foo, "get() returns a command by name");
 	assert(application.get("afoobar") == foo, "get() returns a command by alias");
-	
-	application = new Application;
-	application.add(new FooCommand);
+}
 
-//        $r = new \ReflectionObject($application);
-//        $p = $r->getProperty('wantHelps');
-//        $p->setAccessible(true);
-//        $p->setValue($application, true);
-//        $command = $application->get('foo:bar');
-//        $this->assertInstanceOf('Symfony\Component\Console\Command\HelpCommand', $command, '->get() returns the help command if --help is provided as the input');
+/// silent help test
+unittest{
+	auto application = new Application;
+	application.setAutoExit(false);
+	application.setCatchExceptions(false);
+	
+	auto tester = new ApplicationTester(application);
+	tester.run(["h":true, "-q": true], ["decorated": false]);
+    assert(tester.getDisplay(true) == "");
 }
