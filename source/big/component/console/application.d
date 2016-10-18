@@ -21,9 +21,10 @@ import std.string;
 import std.stdio;
 import std.array;
 import std.algorithm.sorting: sort;
-import std.algorithm.iteration: uniq;
+import std.algorithm.iteration: uniq, filter;
 import std.regex;
 import std.algorithm.searching: canFind;
+import std.algorithm.comparison: levenshteinDistance;
 
 import big.component.console.command.command;
 import big.component.console.command.helpcommand;
@@ -131,7 +132,7 @@ class Application{
 		
 		Command get(string name){
 			if(!(name in this.commandMap)){
-				throw new CommandNotFoundException(format("The command %s does not exist.", name));
+				throw new CommandNotFoundException(format("The command '%s' does not exist.", name));
 			}
 			
 			auto command = this.commandMap[name];
@@ -175,18 +176,19 @@ class Application{
 				namespaces ~= matchFirst(name, namespaseRegex).array;	
 			}
 			
-	        if(namespace.empty){
-	            auto message = format("There are no commands defined in the %s namespace.", namespace);
+	        if(namespaces.empty){
+	            auto message = format("There are no commands defined in the '%s' namespace.", namespace);
 	            auto alternatives = this.findAlternatives(namespace, allNamespaces);
 	            
 	            if(alternatives){
-	                if (1 == count($alternatives)) {
-	                    $message .= "\n\nDid you mean this?\n    ";
-	                } else {
-	                    $message .= "\n\nDid you mean one of these?\n    ";
+	                if(alternatives.length == 1){
+	                    message ~= "\n\nDid you mean this?\n    ";
+	                }
+	                else{
+	                    message ~= "\n\nDid you mean one of these?\n    ";
 	                }
 	                
-	                message ~= implode("\n    ", $alternatives);
+	                message ~= join(alternatives, "\n    ");
 	            }
 
 	            throw new CommandNotFoundException(message, alternatives);
@@ -206,6 +208,62 @@ class Application{
 	        	}
 	        	else{
 	        		return namespaces[0];
+	        	}
+	        }
+	    }
+		
+		Command find(string name){
+	        string[] allCommands = this.commandMap.keys();
+	        string[] commands;
+	        auto expr = replaceAll!(delegate(Captures!(string) m){return m[1] ~ "[^:]*";})(name, regex("([^:]+|)"));
+	        
+	        foreach(commandName; allCommands){
+				commands ~= matchFirst(commandName, expr).array;	
+			}
+	        
+	        if(commands.empty){
+//	            if (false !== $pos = strrpos($name, ':')) {
+//	                // check if a namespace exists and contains commands
+//	                $this->findNamespace(substr($name, 0, $pos));
+//	            }
+
+	            string message = format("Command '%s' is not defined.", name);
+	            auto alternatives = this.findAlternatives(name, allCommands);
+	            
+//	            if ($alternatives = $this->findAlternatives($name, $allCommands)) {
+//	                if (1 == count($alternatives)) {
+//	                    $message .= "\n\nDid you mean this?\n    ";
+//	                } else {
+//	                    $message .= "\n\nDid you mean one of these?\n    ";
+//	                }
+//	                $message .= implode("\n    ", $alternatives);
+//	            }
+	            throw new CommandNotFoundException(message, alternatives);
+	        }
+
+	        if(commands.length > 1) {
+//	            $commandList = $this->commands;
+//	            $commands = array_filter($commands, function ($nameOrAlias) use ($commandList, $commands) {
+//	                $commandName = $commandList[$nameOrAlias]->getName();
+//	                return $commandName === $nameOrAlias || !in_array($commandName, $commands);
+//	            });
+	        }
+
+			auto exact = canFind(commands, name);
+	        if(commands.length > 1 && !exact){
+//	            $suggestions = $this->getAbbreviationSuggestions(array_values($commands));
+//	            throw new CommandNotFoundException(sprintf('Command "%s" is ambiguous (%s).', $name, $suggestions), array_values($commands));
+	        }
+	        
+			if(exact){
+	        	return this.get(name);
+	        }
+	        else{
+	        	if(commands.empty){
+	        		return null;
+	        	}
+	        	else{
+	        		return this.get(commands[0]);
 	        	}
 	        }
 	    }
@@ -288,6 +346,50 @@ class Application{
 	            }
 	        }
 	        return namespaces;
+	    }
+		
+		string[] findAlternatives(string name, string[] collection){
+	        double threshold = 1e3;
+	        double[string] alternatives;
+	        string[][string] collectionParts;
+	        
+	        foreach(item; collection){
+	        	writeln(item);
+	            collectionParts[item] = split(item, ":");
+	        }
+	        
+	        foreach(i, subname; split(name, ":")) {
+	            foreach(collectionName, parts; collectionParts){
+	                bool exists = (collectionName in alternatives) != null;
+	                
+	                if(i >= parts.length && exists) {
+	                    alternatives[collectionName] += threshold;
+	                    continue;
+	                }
+		            else if(i >= parts.length){
+	                    continue;
+	                }
+
+	                ulong lev = levenshteinDistance(subname, parts[i]);
+	                if(lev <= subname.length / 3 || subname != "" && parts[i].indexOf(subname) >= 0) {
+	                    alternatives[collectionName] = exists ? alternatives[collectionName] + lev : lev;
+	                }
+	                else if(exists){
+	                    alternatives[collectionName] += threshold;
+	                }
+	            }
+	        }
+	        
+	        foreach(item; collection){
+	            ulong lev = levenshteinDistance(name, item);
+	            if(lev <= name.length / 3.0 || item.indexOf(name) >= 0 ) {
+	                alternatives[item] = (item in alternatives) != null? alternatives[item] - lev : lev;
+	            }
+	        }
+	        
+//	        $alternatives = array_filter($alternatives, function ($lev) use ($threshold) { return $lev < 2 * $threshold; });
+	        sort(alternatives.keys());
+	        return alternatives.keys();
 	    }		
 			
 	private:

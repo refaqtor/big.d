@@ -9,7 +9,12 @@ module big.component.console.exception.commandnotfoundexception;
 import std.exception;
 
 class CommandNotFoundException: Exception{
-	this(string s){
-		super(s);
+	this(string message, string[] alternatives = [], int code = 0){
+		super(message);
+		
+		this.alternatives = alternatives;
 	}
+	
+	private:
+		string[] alternatives;
 } 

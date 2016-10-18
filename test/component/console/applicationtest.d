@@ -184,5 +184,46 @@ unittest{
 /// find invalid namespace test
 unittest{
 	auto application = new Application;
-	application.findNamespace("bar");
+	bool check = false;
+	
+	try{
+		application.findNamespace("bar");
+	}
+	catch (Exception e) {
+		check = true;
+	}
+	
+	assert(check, "Exception There are no commands defined in the 'bar' namespace.");
 }
+
+/// find unique name but namespace name test
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	application.add(new Foo1Command);
+	application.add(new Foo2Command);
+	
+	bool check = false;
+	
+	try{
+		application.find("foo1");
+	}
+	catch (Exception e) {
+		check = true;
+	}
+	
+	assert(check, "Exception There are no commands defined in the 'bar1' namespace.");
+}
+
+/// find test
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	
+	assert(typeid(application.find("foo:bar")) == typeid(FooCommand), "find() returns a command if its name exists");
+	assert(typeid(application.find("h")) == typeid(HelpCommand), "find() returns a command if its name exists");
+	assert(typeid(application.find("f:bar")) == typeid(FooCommand), "find() returns a command if its name exists");
+	assert(typeid(application.find("f:b")) == typeid(FooCommand), "find() returns a command if its name exists");
+	assert(typeid(application.find("a")) == typeid(FooCommand), "find() returns a command if its name exists");
+}
+
