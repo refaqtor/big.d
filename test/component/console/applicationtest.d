@@ -398,3 +398,14 @@ unittest{
         assert(e.msg.indexOf("foo:bar2") == -1, "find() throws a CommandNotFoundException if command does not exist, with alternative : 'foo:bar'");
     }
 }
+
+/// findAlternativeCommandsWithAnAlias()
+unittest{
+	auto fooCommand = new FooCommand;
+    fooCommand.setAliases(["foo2"]);
+    
+    auto application = new Application;
+    application.add(fooCommand);
+    auto result = application.find("foo");
+    assert(fooCommand == result);
+}

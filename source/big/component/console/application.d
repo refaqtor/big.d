@@ -250,11 +250,15 @@ class Application{
 	        }
 
 	        if(commands.length > 1) {
-//	            $commandList = $this->commands;
-//	            $commands = array_filter($commands, function ($nameOrAlias) use ($commandList, $commands) {
-//	                $commandName = $commandList[$nameOrAlias]->getName();
-//	                return $commandName === $nameOrAlias || !in_array($commandName, $commands);
-//	            });
+	        	bool findCommand(string nameOrAlias){
+	        		if(nameOrAlias in this.commandMap){
+		        		string commandName = this.commandMap[nameOrAlias].getName();
+		        		return commandName == nameOrAlias  || !canFind(commands, commandName);	
+	        		}
+	        		return false;
+	        	}
+	        	
+				commands = commands.filter!(findCommand).array;
 	        }
 
 			auto exact = canFind(commands, name);
