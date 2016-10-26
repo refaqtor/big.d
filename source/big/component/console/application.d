@@ -173,7 +173,7 @@ class Application{
 			auto namespaseRegex = replaceAll!(delegate(Captures!(string) m){return m.hit ~ "[^:]*";})(namespace, regex("([^:]+|)"));
 			string[] namespaces;
 			foreach(name; allNamespaces){
-				namespaces ~= matchFirst(name, namespaseRegex).array;	
+				namespaces ~= matchFirst(name, "^" ~ namespaseRegex).array;	
 			}
 			
 	        if(namespaces.empty){
@@ -214,14 +214,18 @@ class Application{
 		
 		Command find(string name){
 	        string[] allCommands = this.commandMap.keys();
-	        string[] commands;
-	        auto expr = replaceAll!(delegate(Captures!(string) m){return m[1] ~ "[^:]*";})(name, regex("([^:]+|)"));
+	        string[] commands, commandsEnd;
+	        auto expr = replaceAll!(delegate(Captures!(string) m){return m[1] ~ "[^:]*";})(name, regex("([^:]+)"));
 	        
 	        foreach(commandName; allCommands){
-				commands ~= matchFirst(commandName, expr).array;	
+				commands ~= matchFirst(commandName, "^" ~ expr).array;	
 			}
 	        
-	        if(commands.empty){
+	        foreach(commandName; allCommands){
+				commandsEnd ~= matchFirst(commandName, "^" ~ expr ~ "$").array;	
+			}
+	        
+	        if(commands.empty || commandsEnd.empty){
 //	            if (false !== $pos = strrpos($name, ':')) {
 //	                // check if a namespace exists and contains commands
 //	                $this->findNamespace(substr($name, 0, $pos));
@@ -252,7 +256,7 @@ class Application{
 			auto exact = canFind(commands, name);
 	        if(commands.length > 1 && !exact){
 //	            $suggestions = $this->getAbbreviationSuggestions(array_values($commands));
-//	            throw new CommandNotFoundException(sprintf('Command "%s" is ambiguous (%s).', $name, $suggestions), array_values($commands));
+	            throw new CommandNotFoundException("Command '%s' is ambiguous (%s).");
 	        }
 	        
 			if(exact){
@@ -354,7 +358,6 @@ class Application{
 	        string[][string] collectionParts;
 	        
 	        foreach(item; collection){
-	        	writeln(item);
 	            collectionParts[item] = split(item, ":");
 	        }
 	        

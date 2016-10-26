@@ -227,3 +227,31 @@ unittest{
 	assert(typeid(application.find("a")) == typeid(FooCommand), "find() returns a command if its name exists");
 }
 
+/// find with ambiguous abbreviations test
+unittest{
+    auto application = new Application;
+    application.add(new FooCommand);
+    application.add(new Foo1Command);
+    application.add(new Foo2Command);
+    
+    bool checkF, checkA = false;
+    
+    try{
+    	application.find("f");
+    }
+    catch(Exception e){
+    	checkF = true;
+    	assert(e.msg == "Command 'f' is not defined.");
+    }
+    
+    try{
+    	writeln(application.find("a"));
+    }
+    catch(Exception e){
+    	checkA = true;
+    	writeln(e.msg);
+    	assert(e.msg == "Command 'f' is not defined.");
+    }
+    
+    assert(checkF && checkA);
+}
