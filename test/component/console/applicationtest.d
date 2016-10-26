@@ -5,14 +5,19 @@
 */
 
 import std.stdio;
+import std.string;
 
 import big.component.console.application;
 import big.component.console.command.helpcommand;
 import test.component.console.command.barbuccommand;
 import test.component.console.command.foocommand;
+import test.component.console.command.foobarcommand;
 import test.component.console.command.foo1command;
 import test.component.console.command.foo2command;
+import test.component.console.command.foo3command;
+import test.component.console.command.foo4command;
 import test.component.console.command.foo5command;
+import big.component.console.exception.commandnotfoundexception;
 import test.component.console.tester.applicationtester;
 
 /// Constructor test
@@ -234,24 +239,162 @@ unittest{
     application.add(new Foo1Command);
     application.add(new Foo2Command);
     
-    bool checkF, checkA = false;
+    bool checkF, checkA, checkB = false;
     
     try{
     	application.find("f");
     }
     catch(Exception e){
     	checkF = true;
-    	assert(e.msg == "Command 'f' is not defined.");
+    	assert(e.msg.indexOf("Command 'f' is not defined.") > -1);
     }
     
     try{
-    	writeln(application.find("a"));
+    	application.find("a");
     }
     catch(Exception e){
     	checkA = true;
-    	writeln(e.msg);
-    	assert(e.msg == "Command 'f' is not defined.");
+    	assert(e.msg == "Command 'a' is ambiguous (afoobar2,afoobar,afoobar1).");
     }
     
-    assert(checkF && checkA);
+    try{
+    	application.find("foo:b");
+    }
+    catch(Exception e){
+    	checkB = true;
+    	assert(e.msg == "Command 'foo:b' is ambiguous (foo1:bar,foo:bar1,foo:bar).");
+    }
+    
+    assert(checkF && checkA && checkB);
+}
+
+/// find command equal namespace test
+unittest{
+	auto application = new Application;
+    application.add(new Foo3Command);
+    application.add(new Foo4Command);
+    
+    assert(typeid(Foo3Command) == typeid(application.find("foo3:bar")), "find() returns the good command even if a namespace has same name");
+    assert(typeid(Foo4Command) == typeid(application.find("foo3:bar:toh")), "find() returns a command even if its namespace equals another command name");
+}
+
+/// find command with ambiguous namespaces but unique name test
+unittest{
+	auto application = new Application;
+    application.add(new FooCommand);
+    application.add(new FoobarCommand);
+    
+    assert(typeid(FoobarCommand) == typeid(application.find("f:f")));
+}
+
+/// find command with missing namespace
+unittest{
+	auto application = new Application;
+    application.add(new Foo4Command);
+    assert(typeid(Foo4Command) == typeid(application.find("f:t")));
+}
+
+/// find alternative exception message single test
+unittest{
+	auto application = new Application;
+    application.add(new Foo3Command);
+    
+    bool checkA, checkB = false;
+    
+    try{
+    	application.find("foo3:baR");
+    }
+    catch(Exception e){
+    	checkA = true;
+    	assert(e.msg.indexOf("Did you mean this?") > -1);
+    }
+    
+    try{
+    	application.find("foO3:bar");
+    }
+    catch(Exception e){
+    	checkB = true;
+    	assert(e.msg.indexOf("Did you mean this?") > -1);
+    }
+    
+    assert(checkA && checkB);
+}
+
+/// find alternative exception message multiple test
+unittest{
+	auto application = new Application;
+    application.add(new FooCommand);
+    application.add(new Foo1Command);
+    application.add(new Foo2Command);
+    
+    // Command + plural
+	try {
+	    application.find("foo:baR");
+	    assert(false, "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+	}
+	catch(Exception e){
+		assert(typeid(e) == typeid(CommandNotFoundException), "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+		assert(e.msg.indexOf("Did you mean one of these") > -1, "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+		assert(e.msg.indexOf("foo1:bar") > -1);
+		assert(e.msg.indexOf("foo:bar") > -1);
+	}
+	
+	// Namespace + plural
+    try {
+	    application.find("foo2:bar");
+        assert(false, "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+    }
+    catch(Exception e){
+    	assert(typeid(e) == typeid(CommandNotFoundException), "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+		assert(e.msg.indexOf("Did you mean one of these") > -1, "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+		assert(e.msg.indexOf("foo1") > -1);
+		assert(e.msg.indexOf("foo:bar") > -1);
+    }
+    
+    application.add(new Foo3Command);
+    application.add(new Foo4Command);
+    
+    // Subnamespace + plural
+    try {
+		application.find("foo3:");
+	    assert(false, "find() should throw an CommandNotFoundException if a command is ambiguous because of a subnamespace, with alternatives");
+        }
+	catch(Exception e){
+        assert(typeid(e) == typeid(CommandNotFoundException), "find() throws a CommandNotFoundException if command does not exist, with alternatives");
+        assert(e.msg.indexOf("foo3:bar") > -1);
+        assert(e.msg.indexOf("foo3:bar:toh") > -1);
+    }
+}
+
+/// find alternative commands
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	application.add(new Foo1Command);
+	application.add(new Foo2Command);
+
+	auto commandName = "Unknown command";
+
+    try {
+		application.find(commandName);
+        assert(false, "find() throws a CommandNotFoundException if command does not exist");
+    }
+    catch(CommandNotFoundException e){
+    	assert(e.getAlternatives().empty);
+    	assert(e.msg.indexOf(format("Command '%s' is not defined.", commandName)) > -1, "find() throws a CommandNotFoundException if command does not exist, without alternatives");
+    }
+    
+    commandName = "bar1";
+     
+    try{
+	    application.find(commandName);
+        assert(false, "find() throws a CommandNotFoundException if command does not exist");
+    }
+    catch(CommandNotFoundException e){
+        assert(e.getAlternatives() == ["foo:bar1", "afoobar1"]);
+        assert(e.msg.indexOf(format("Command '%s' is not defined.", commandName)) > -1, "find() throws a CommandNotFoundException if command does not exist, without alternatives");
+        assert(e.msg.indexOf("afoobar1") > -1, "find() throws a CommandNotFoundException if command does not exist, with alternative : 'afoobar1'");
+        assert(e.msg.indexOf("foo:bar1") > -1, "find() throws a CommandNotFoundException if command does not exist, with alternative : 'foo:bar1'");
+        assert(e.msg.indexOf("foo:bar2") == -1, "find() throws a CommandNotFoundException if command does not exist, with alternative : 'foo:bar'");
+    }
 }

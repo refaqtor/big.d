@@ -4,15 +4,13 @@
 	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
 */
 
-module test.component.console.command.foo1command;
+module test.component.console.command.foo4command;
 
 import big.component.console.command.command;
 
-class Foo1Command: Command{
+class Foo4Command: Command{
 	protected:
 		override void configure(){
-			this.setName("foo:bar1");
-//			this.setDescription("The foo:bar1 command");
-            this.setAliases(["afoobar1"]);
+			this.setName("foo3:bar:toh");
 		}
 }

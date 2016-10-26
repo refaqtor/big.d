@@ -180,7 +180,7 @@ class Application{
 	            auto message = format("There are no commands defined in the '%s' namespace.", namespace);
 	            auto alternatives = this.findAlternatives(namespace, allNamespaces);
 	            
-	            if(alternatives){
+	            if(!alternatives.empty){
 	                if(alternatives.length == 1){
 	                    message ~= "\n\nDid you mean this?\n    ";
 	                }
@@ -215,7 +215,10 @@ class Application{
 		Command find(string name){
 	        string[] allCommands = this.commandMap.keys();
 	        string[] commands, commandsEnd;
-	        auto expr = replaceAll!(delegate(Captures!(string) m){return m[1] ~ "[^:]*";})(name, regex("([^:]+)"));
+	        string[] exprArray;
+	        replaceAll!(delegate(Captures!(string) m){exprArray = exprArray ~ (m[1] ~ "[^:]*");return m[1];})(name, regex("([^:]+)"));
+	        
+	        string expr = exprArray.join(".*");
 	        
 	        foreach(commandName; allCommands){
 				commands ~= matchFirst(commandName, "^" ~ expr).array;	
@@ -234,14 +237,15 @@ class Application{
 	            string message = format("Command '%s' is not defined.", name);
 	            auto alternatives = this.findAlternatives(name, allCommands);
 	            
-//	            if ($alternatives = $this->findAlternatives($name, $allCommands)) {
-//	                if (1 == count($alternatives)) {
-//	                    $message .= "\n\nDid you mean this?\n    ";
-//	                } else {
-//	                    $message .= "\n\nDid you mean one of these?\n    ";
-//	                }
-//	                $message .= implode("\n    ", $alternatives);
-//	            }
+	            if(!alternatives.empty){
+	                if(alternatives.length == 1){
+	                    message ~= "\n\nDid you mean this?\n    ";
+	                } else {
+	                    message ~= "\n\nDid you mean one of these?\n    ";
+	                }
+	                message ~= alternatives.join("\n    ");
+	            }
+	            
 	            throw new CommandNotFoundException(message, alternatives);
 	        }
 
@@ -255,8 +259,7 @@ class Application{
 
 			auto exact = canFind(commands, name);
 	        if(commands.length > 1 && !exact){
-//	            $suggestions = $this->getAbbreviationSuggestions(array_values($commands));
-	            throw new CommandNotFoundException("Command '%s' is ambiguous (%s).");
+	            throw new CommandNotFoundException(format("Command '%s' is ambiguous (%s).", name, commands.join(",")));
 	        }
 	        
 			if(exact){
@@ -390,7 +393,6 @@ class Application{
 	            }
 	        }
 	        
-//	        $alternatives = array_filter($alternatives, function ($lev) use ($threshold) { return $lev < 2 * $threshold; });
 	        sort(alternatives.keys());
 	        return alternatives.keys();
 	    }		
