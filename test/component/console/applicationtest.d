@@ -348,7 +348,6 @@ unittest{
     	assert(typeid(e) == typeid(CommandNotFoundException), "find() throws a CommandNotFoundException if command does not exist, with alternatives");
 		assert(e.msg.indexOf("Did you mean one of these") > -1, "find() throws a CommandNotFoundException if command does not exist, with alternatives");
 		assert(e.msg.indexOf("foo1") > -1);
-		assert(e.msg.indexOf("foo:bar") > -1);
     }
     
     application.add(new Foo3Command);
@@ -399,7 +398,7 @@ unittest{
     }
 }
 
-/// findAlternativeCommandsWithAnAlias()
+/// find alternative commands with an alias test
 unittest{
 	auto fooCommand = new FooCommand;
     fooCommand.setAliases(["foo2"]);
@@ -408,4 +407,34 @@ unittest{
     application.add(fooCommand);
     auto result = application.find("foo");
     assert(fooCommand == result);
+}
+
+/// find alternative namespace test
+unittest{
+	auto application = new Application;
+	application.add(new FooCommand);
+	application.add(new Foo1Command);
+	application.add(new Foo2Command);
+	application.add(new Foo3Command);
+    
+    try{
+	    application.find("Unknown-namespace:Unknown-command");
+        assert(false, "find() throws a CommandNotFoundException if namespace does not exist");
+    }
+    catch(CommandNotFoundException e){
+	    assert(e.getAlternatives() == []);
+        assert(e.msg == "There are no commands defined in the 'Unknown-namespace' namespace.", "find() throws a CommandNotFoundException if namespace does not exist, without alternatives");
+    }
+    
+    try{
+	    application.find("foo2:command");
+	    assert(false, "find() throws a CommandNotFoundException if namespace does not exist");
+    }
+    catch(CommandNotFoundException e) {
+    	assert(e.getAlternatives == ["foo", "foo1", "foo3"]);
+    	assert(e.msg.indexOf("There are no commands defined in the 'foo2' namespace.") > -1, "find() throws a CommandNotFoundException if namespace does not exist, with alternative");
+    	assert(e.msg.indexOf("foo") > -1, "find() throws a CommandNotFoundException if namespace does not exist, with alternative : 'foo'");
+    	assert(e.msg.indexOf("foo1") > -1, "find() throws a CommandNotFoundException if namespace does not exist, with alternative : 'foo1'");
+    	assert(e.msg.indexOf("foo3") > -1, "find() throws a CommandNotFoundException if namespace does not exist, with alternative : 'foo3'");
+    }
 }

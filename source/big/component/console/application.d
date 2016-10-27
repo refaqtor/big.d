@@ -229,10 +229,10 @@ class Application{
 			}
 	        
 	        if(commands.empty || commandsEnd.empty){
-//	            if (false !== $pos = strrpos($name, ':')) {
-//	                // check if a namespace exists and contains commands
-//	                $this->findNamespace(substr($name, 0, $pos));
-//	            }
+	        	auto pos = name.indexOf(":");
+	            if(pos > -1){
+		            this.findNamespace(name[0..pos]);
+	            }
 
 	            string message = format("Command '%s' is not defined.", name);
 	            auto alternatives = this.findAlternatives(name, allCommands);
