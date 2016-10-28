@@ -4,6 +4,9 @@
 	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
 */
 
-int main(string[] args){
-	return 0;
+module big.console.input.input;
+
+import big.console.input;
+
+abstract class Input: InputInterface{
 }

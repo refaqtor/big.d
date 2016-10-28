@@ -4,6 +4,13 @@
 	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
 */
 
-int main(string[] args){
-	return 0;
+module test.console.command.barbuccommand;
+
+import big.console.command;
+
+class BarBucCommand: Command{
+	protected:
+		override void configure(){
+			this.setName("bar:buc");
+		}
 }

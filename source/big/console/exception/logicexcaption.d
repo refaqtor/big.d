@@ -4,6 +4,12 @@
 	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
 */
 
-int main(string[] args){
-	return 0;
-}
+module big.console.exception.logicexception;
+
+import std.exception;
+
+class LogicException: Exception{
+	this(string s){
+		super(s);
+	}
+} 

@@ -4,6 +4,9 @@
 	License: Subject to the terms of the MIT license, as written in the included LICENSE.txt file.
 */
 
-int main(string[] args){
-	return 0;
+module big.console.formatter.outputformatterinterface;
+
+interface OutputFormatterInterface{
+	public:
+		void setDecorated(bool decorated);
 }

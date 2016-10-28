@@ -2,4 +2,6 @@
 /dub.selections.json
 /.project
 /bin
+/.idea
 libbigd.a
+*.xml
