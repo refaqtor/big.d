@@ -5,3 +5,6 @@
 /.idea
 libbigd.a
 *.xml
+test
+*.o
+/.dub

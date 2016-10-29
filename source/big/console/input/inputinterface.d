@@ -6,7 +6,16 @@
 
 module big.console.input.inputinterface;
 
-interface InputInterface{
-	public:
-		void setInteractive(bool interactive);
+interface InputInterface
+{
+public:
+    string getFirstArgument();
+
+    void setInteractive(bool interactive);
+
+    bool hasParameterOption(string[] values, bool onlyParams = false);
+
+    void validate();
+
+    string getArgument(string name);
 }
