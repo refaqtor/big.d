@@ -162,6 +162,20 @@ public:
         return this;
     }
 
+    Command setDefinition(InputDefinition definition)
+    {
+        if (!(definition is null))
+        {
+            _definition = definition;
+        }
+        else
+        {
+            _definition.setDefinition(definition);
+        }
+        _applicationDefinitionMerged = false;
+        return this;
+    }
+
     InputDefinition getDefinition()
     {
         return _definition;
@@ -197,6 +211,7 @@ private:
 private:
     Application _application;
     bool _ignoreValidationErrors;
+    bool _applicationDefinitionMerged = false;
     string _name;
     string[] _aliases;
     InputDefinition _definition;

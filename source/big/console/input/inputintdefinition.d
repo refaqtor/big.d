@@ -14,6 +14,21 @@ import big.console.exception;
 class InputDefinition
 {
 public:
+    //	void setDefinition(array $definition)
+    //    {
+    //        $arguments = array();
+    //        $options = array();
+    //        foreach ($definition as $item) {
+    //            if ($item instanceof InputOption) {
+    //                $options[] = $item;
+    //            } else {
+    //                $arguments[] = $item;
+    //            }
+    //        }
+    //        $this->setArguments($arguments);
+    //        $this->setOptions($options);
+    //    }
+
     bool hasArgument(string name)
     {
         return !((name in _arguments) is null);

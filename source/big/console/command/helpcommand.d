@@ -24,12 +24,12 @@ protected:
     override void configure()
     {
         ignoreValidationErrors();
-        this.setName("help");
-        //            ->setDefinition(array(
-        //                new InputArgument('command_name', InputArgument::OPTIONAL, 'The command name', 'help'),
-        //                new InputOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (txt, xml, json, or md)', 'txt'),
-        //                new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command help'),
-        //            ))
+        setName("help");
+        setDefinition([new InputArgument("command_name", InputArgument.OPTIONAL,
+            "The command name", "help"), new InputOption("format", null,
+            InputOption.VALUE_REQUIRED, "The output format (txt, xml, json, or md)",
+            "txt"), new InputOption("raw", null, InputOption.VALUE_NONE,
+            "To output raw command help")]);
         //            ->setDescription('Displays help for a command')
         //            ->setHelp(<<<'EOF'
         //The <info>%command.name%</info> command displays help for a given command:
@@ -49,13 +49,9 @@ protected:
             _command = getApplication().find(input.getArgument("command_name"));
         }
 
-        writeln("HEEEEELPPPPP");
-
-        //        $helper = new DescriptorHelper();
-        //        $helper->describe($output, $this->command, array(
-        //            'format' => $input->getOption('format'),
-        //            'raw_text' => $input->getOption('raw'),
-        //        ));
+        auto helper = new DescriptorHelper();
+        helper.describe(output, command, ["format" : input.getOption("format"),
+            "raw_text" : input.getOption("raw")]);
         _command = null;
         return 0;
     }
