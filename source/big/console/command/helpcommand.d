@@ -6,6 +6,8 @@
 
 module big.console.command.helpcommand;
 
+import std.stdio;
+
 import big.console.command;
 import big.console.input;
 import big.console.output;
@@ -21,7 +23,7 @@ public:
 protected:
     override void configure()
     {
-        //			$this->ignoreValidationErrors();
+        ignoreValidationErrors();
         this.setName("help");
         //            ->setDefinition(array(
         //                new InputArgument('command_name', InputArgument::OPTIONAL, 'The command name', 'help'),
@@ -46,6 +48,8 @@ protected:
         {
             _command = getApplication().find(input.getArgument("command_name"));
         }
+
+        writeln("HEEEEELPPPPP");
 
         //        $helper = new DescriptorHelper();
         //        $helper->describe($output, $this->command, array(

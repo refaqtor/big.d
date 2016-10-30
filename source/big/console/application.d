@@ -426,7 +426,7 @@ public:
         auto name = getCommandName(input);
         if (input.hasParameterOption(["--help", "-h"], true))
         {
-            if (!name)
+            if (name is null)
             {
                 name = "help";
                 input = new ArrayInput(["command_name" : _defaultCommand]);
@@ -458,13 +458,17 @@ protected:
 
     int doRunCommand(Command command, InputInterface input, OutputInterface output)
     {
-        //        foreach ($command->getHelperSet() as $helper) {
-        //            if ($helper instanceof InputAwareInterface) {
-        //                $helper->setInput($input);
+        //        foreach (helper; command.getHelperSet().getHelpers())
+        //        {
+        //            if (typeid(helper) == typeid(InputAwareInterface))
+        //            {
+        //                helper.setInput(input);
         //            }
         //        }
+
         if (_dispatcher is null)
         {
+            writeln(command);
             return command.run(input, output);
         }
         //        // bind before the console.command event, so the listeners have access to input options/arguments

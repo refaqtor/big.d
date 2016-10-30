@@ -6,7 +6,15 @@
 
 module big.console.formatter.outputformatterinterface;
 
-interface OutputFormatterInterface{
-	public:
-		void setDecorated(bool decorated);
+import big.console.formatter;
+
+interface OutputFormatterInterface
+{
+public:
+    void setDecorated(bool decorated);
+    bool isDecorated();
+    void setStyle(string name, OutputFormatterStyleInterface style);
+    bool hasStyle(string name);
+    OutputFormatterStyleInterface getStyle(string name);
+    string format(string message);
 }

@@ -16,24 +16,32 @@ import big.console.application;
 import big.console.exception;
 import big.console.input;
 import big.console.output;
+import big.console.helper;
 
 class Command
 {
 public:
-    this(string name = "")
+    this(string name = null)
     {
-        if (name != "")
+        _definition = new InputDefinition;
+
+        if (!(name is null))
         {
             setName(name);
         }
 
         configure();
 
-        if (getName() == "")
+        if (getName().empty)
         {
             throw new LogicException(
                 format("The command defined in %s cannot have an empty name.", typeid(this)));
         }
+    }
+
+    void ignoreValidationErrors()
+    {
+        _ignoreValidationErrors = true;
     }
 
     void setApplication(Application application = null)
@@ -42,12 +50,27 @@ public:
 
         if (_application)
         {
-            //	            $this->setHelperSet($application->getHelperSet());
+            //            setHelperSet(_application.getHelperSet());
         }
         else
         {
-            //	            $this->helperSet = null;
+            //            _helperSet = null;
         }
+    }
+
+    //    void setHelperSet(HelperSet helperSet)
+    //    {
+    //        _helperSet = helperSet;
+    //    }
+    //
+    //    HelperSet getHelperSet()
+    //    {
+    //        return _helperSet;
+    //    }
+
+    Application getApplication()
+    {
+        return _application;
     }
 
     bool isEnabled()
@@ -85,7 +108,6 @@ public:
 
     int run(InputInterface input, OutputInterface output)
     {
-        //        // force the creation of the synopsis before the merge with the app definition
         //        $this->getSynopsis(true);
         //        $this->getSynopsis(false);
         //        // add the application arguments and options
@@ -114,9 +136,12 @@ public:
         //        // The command name argument is often omitted when a command is executed directly with its run() method.
         //        // It would fail the validation if we didn't make sure the command argument is present,
         //        // since it's required by the application.
-        //        if ($input->hasArgument('command') && null === $input->getArgument('command')) {
-        //            $input->setArgument('command', $this->getName());
+
+        //        if (input.hasArgument("command") && input.getArgument("command") is null)
+        //        {
+        //            input.setArgument("command", getName());
         //        }
+
         input.validate();
         int statusCode = 0;
 
@@ -131,9 +156,15 @@ public:
         return statusCode;
     }
 
-    Application getApplication()
+    Command setCode(int delegate(InputInterface, OutputInterface) code)
     {
-        return _application;
+        _code = code;
+        return this;
+    }
+
+    InputDefinition getDefinition()
+    {
+        return _definition;
     }
 
 protected:
@@ -147,6 +178,14 @@ protected:
             "You must override the execute() method in the concrete command class.");
     }
 
+    void interact(InputInterface input, OutputInterface output)
+    {
+    }
+
+    void initialize(InputInterface input, OutputInterface output)
+    {
+    }
+
 private:
     void validateName(string name)
     {
@@ -157,7 +196,10 @@ private:
 
 private:
     Application _application;
+    bool _ignoreValidationErrors;
     string _name;
     string[] _aliases;
+    InputDefinition _definition;
+    //    HelperSet _helperSet;
     int delegate(InputInterface, OutputInterface) _code;
 }

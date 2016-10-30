@@ -8,5 +8,9 @@ module big.console.output.consoleoutputinterface;
 
 import big.console.output;
 
-interface ConsoleOutputInterface: OutputInterface{
+interface ConsoleOutputInterface : OutputInterface
+{
+public:
+    OutputInterface getErrorOutput();
+    void setErrorOutput(OutputInterface error);
 }
