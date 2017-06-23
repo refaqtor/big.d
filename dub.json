@@ -2,50 +2,19 @@
 	"name" : "big-d",
 	"description": "MVC Web framework for D",
 	"copyright": "Copyright © 2016, LLC CERERIS",
+	"homepage": "http://cereris.org",
 	"license": "MIT",
 	"authors": [
-		"LLC CERERIS"
+		"LLC CERERIS",
+		"see github for more"
 	],
 	"sourcePaths": ["./source"],
-	
+
 	"dependencies": {
-		"vibe-d": "~>0.7.30-rc.1",
-		"hibernated": "~>0.2.31",
-		":cli": "*",
-		":test": "*"
+		"vibe-d": "~>0.8.0-beta.8",
+		"hibernated": "~>0.2.31"
 	},
-	
+
 	"targetType" : "library",
 	"targetName": "bigd",
-	
-	"subPackages": [
-		{
-			"name": "cli",
-			"sourcePaths": ["./source/big/console/"],
-			"targetType": "executable",
-			"targetPath": "bin",
-			"targetName": "cli",
-			"mainSourceFile" : "./source/big/console/consolelineinterface.d",
-			"dependencies": {
-				"colorize": "~>1.0.5"
-			}
-		},
-		{
-			"name": "test",
-			"sourcePaths": ["./test/", "./source/"],
-			"excludedSourceFiles": [
-				"source/big/console/consolelineinterface.d"
-			],
-			"mainSourceFile" : "./test/main.d",
-			"targetType": "executable",
-			"targetPath": "bin",
-			"targetName": "test",
-			"buildOptions": [
-				"unittests"
-			],
-			"dependencies": {
-				"colorize": "~>1.0.5"
-			}
-		}
-	]
 }
