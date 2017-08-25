@@ -34,6 +34,6 @@ script:
   - dub run dscanner -- --syntaxCheck source 2>&1 || echo "Syntax check!"
   - dub run dscanner -- --sloc source
   - dub run big-d:test --combined
-  - - rm test*.lst
+  - rm test*.lst
   - dub build --build=ddox
   - ./doveralls

@@ -50,9 +50,9 @@ unittest
         string expectedMessage = "Test message for logging";
 
         runTask({
-          sleep(1.msecs);
-          logger.warning(expectedMessage);
           sleep(10.msecs);
+          logger.warning(expectedMessage);
+          sleep(100.msecs);
           server.stopListening();
           exitEventLoop();
         });
@@ -106,11 +106,11 @@ unittest
         string expectedMessage = "Test message for logging";
 
         runTask({
-          sleep(1.msecs);
-          logger.warning(expectedMessage);
           sleep(10.msecs);
           logger.warning(expectedMessage);
-          sleep(10.msecs);
+          sleep(100.msecs);
+          logger.warning(expectedMessage);
+          sleep(100.msecs);
           server.stopListening();
           exitEventLoop();
         });
@@ -147,7 +147,7 @@ unittest
             logger.warning(expectedMessage).shouldNotThrow();
           });
 
-          sleep(10.msecs);
+          sleep(100.msecs);
           exitEventLoop();
         });
 
