@@ -1,9 +1,15 @@
 # DUB
 .dub
-dub.selection.json
+dub.selections.json
 docs.json
 __dummy.html
 docs/
+
+#libs
+*.a
+
+#test
+bigd-test
 
 # Code coverage
 *.lst
