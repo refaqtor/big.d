@@ -113,16 +113,16 @@ unittest
           sleep(100.msecs);
           server.stopListening();
           exitEventLoop();
+          
+          then!"TCP server receive custom message"
+          ({
+            messageCount.shouldEqual(2);
+            (canFind(data, "[warning]")).shouldBeTrue();
+            (canFind(data, expectedMessage)).shouldBeTrue();
+          });
         });
 
         runEventLoop();
-
-        then!"TCP server receive custom message"
-        ({
-          messageCount.shouldEqual(2);
-          (canFind(data, "[warning]")).shouldBeTrue();
-          (canFind(data, expectedMessage)).shouldBeTrue();
-        });
       });
     });
   });

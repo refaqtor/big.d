@@ -6,8 +6,8 @@
 
 module big.log.tcplogger;
 
-import std.experimental.logger: Logger, LogLevel;
 import std.datetime: DateTime;
+import std.experimental.logger: Logger, LogLevel;
 import std.string: format;
 import vibe.core.net: connectTCP, NetworkAddress, resolveHost, TCPConnection;
 
