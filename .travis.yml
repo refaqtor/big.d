@@ -23,5 +23,17 @@ matrix:
     - d: dmd-beta
     - d: ldc-beta
 
+before_install:
+  - wget -O doveralls "https://github.com/ColdenCullen/doveralls/releases/download/v1.3.1/doveralls_linux_travis"
+  - chmod +x doveralls
+
 script:
   - dub build
+  - dub fetch dscanner
+  - dscanner --styleCheck source 2>&1 || echo "Style check!"
+  - dscanner --syntaxCheck source 2>&1 || echo "Syntax check!"
+  - dscanner --sloc source
+  - dub run big-d:test --combined
+  - - rm test*.lst
+  - dub build --build=ddox
+  - ./doveralls

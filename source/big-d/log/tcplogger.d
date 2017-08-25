@@ -19,7 +19,7 @@ class TCPLogger: Logger
     Params:
       host = The host address of the TCP server.
       port = The port of the TCP server.
-      lv = The $(D LogLevel) for the $(D TCPLogger). By default - LogLevel.warning
+      logLevel = The $(D LogLevel) for the $(D TCPLogger). By default - LogLevel.warning
 
     Example:
     -------------
