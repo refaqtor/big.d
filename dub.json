@@ -1,20 +1,35 @@
 {
 	"name" : "big-d",
 	"description": "MVC Web framework for D",
-	"copyright": "Copyright © 2016, LLC CERERIS",
-	"homepage": "http://cereris.org",
+	"copyright": "Copyright © 2017, LLC CERERIS",
 	"license": "MIT",
+	"homepage": "http://cereris.org",
 	"authors": [
-		"LLC CERERIS",
-		"see github for more"
+		"LLC CERERIS"
 	],
-	"sourcePaths": ["./source"],
-
-	"dependencies": {
-		"vibe-d": "~>0.8.0-beta.8",
-		"hibernated": "~>0.2.31"
-	},
-
-	"targetType" : "library",
+	"sourcePaths": ["source"],
 	"targetName": "bigd",
+	"targetType" : "library",
+  "dependencies":
+  {
+    "checkit": "~>0.0.5",
+    "vibe-d:core": "~>0.8.1-rc.3"
+  },
+  "subPackages":
+  [
+    {
+      "name": "test",
+      "targetName": "bigd-test",
+      "description": "Tests for big.d",
+      "targetType": "executable",
+      "buildOptions": ["unittests", "coverage"],
+      "sourcePaths": ["source", "test"],
+      "dependencies":
+      {
+        "checkit": "~>0.0.5",
+        "vibe-d:core": "~>0.8.1-rc.3",
+        "vibe-d:stream": "~>0.8.1-rc.3"
+      }
+    }
+  ]
 }

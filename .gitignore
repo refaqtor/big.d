@@ -1,0 +1,12 @@
+# DUB
+.dub
+dub.selection.json
+docs.json
+__dummy.html
+docs/
+
+# Code coverage
+*.lst
+
+# Doveralls
+Doveralls
