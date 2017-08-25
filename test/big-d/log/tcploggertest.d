@@ -43,7 +43,7 @@ unittest
             {}
           }, "127.0.0.1");
 
-      TCPLogger logger = new TCPLogger("localhost", 32000);
+      TCPLogger logger = new TCPLogger("127.0.0.1", 32000);
 
       when!"Logging custom message"
       ({
@@ -99,7 +99,7 @@ unittest
             {}
           }, "127.0.0.1");
 
-      TCPLogger logger = new TCPLogger("localhost", 32002);
+      TCPLogger logger = new TCPLogger("127.0.0.1", 32002);
 
       when!"Logging custom message"
       ({
@@ -134,7 +134,7 @@ unittest
   ({
     given!"TCPLogger"
     ({
-      TCPLogger logger = new TCPLogger("localhost", 32001);
+      TCPLogger logger = new TCPLogger("127.0.0.1", 32001);
 
       when!"Logging custom message"
       ({
