@@ -30,9 +30,9 @@ before_install:
 script:
   - dub build
   - dub fetch dscanner
-  - dscanner --styleCheck source 2>&1 || echo "Style check!"
-  - dscanner --syntaxCheck source 2>&1 || echo "Syntax check!"
-  - dscanner --sloc source
+  - dub run dscanner -- --styleCheck source 2>&1 || echo "Style check!"
+  - dub run dscanner -- --syntaxCheck source 2>&1 || echo "Syntax check!"
+  - dub run dscanner -- --sloc source
   - dub run big-d:test --combined
   - - rm test*.lst
   - dub build --build=ddox
