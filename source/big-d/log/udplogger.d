@@ -54,8 +54,6 @@ class UDPLogger: Logger
       }
       catch(Exception e)
       {
-        import std.stdio;
-        writeln(e.msg);
       }
     }
 
