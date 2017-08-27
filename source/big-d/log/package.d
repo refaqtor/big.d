@@ -7,3 +7,4 @@
 module big.log;
 
 public import big.log.tcplogger;
+public import big.log.udplogger;
