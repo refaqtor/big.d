@@ -25,7 +25,8 @@
 	    "authors": [
 		    "LLC CERERIS"
 	    ],
-	    "sourcePaths": ["source/big-d/log"],
+	    "sourcePaths": ["log"],
+      "importPaths": ["log"],
 	    "targetType" : "library",
       "dependencies":
       {
@@ -38,12 +39,12 @@
       "description": "Tests for big.d",
       "targetType": "executable",
       "buildOptions": ["unittests", "coverage"],
-      "sourcePaths": ["source", "test"],
+      "sourcePaths": ["test"],
       "dependencies":
       {
+        "big-d:log": "*",
         "checkit": "~>0.0.5",
-        "vibe-d:core": "~>0.8.1-rc.3",
-        "vibe-d:stream": "~>0.8.1-rc.3"
+        "vibe-d:core": "~>0.8.1-rc.3"
       }
     }
   ]

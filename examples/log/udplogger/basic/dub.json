@@ -1,0 +1,17 @@
+{
+	"name" : "udplogger",
+	"description": "UDP Logger Example",
+	"copyright": "Copyright © 2017, LLC CERERIS",
+	"license": "MIT",
+	"homepage": "http://cereris.org",
+	"authors": [
+		"LLC CERERIS"
+	],
+	"sourcePaths": ["source"],
+	"targetName": "udplogger",
+	"targetType" : "executable",
+  "dependencies":
+  {
+    "big-d:log": "~>0.0.1"
+  }
+}

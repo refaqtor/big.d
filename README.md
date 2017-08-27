@@ -5,12 +5,10 @@ MVC Web framework for D.
 
 ### Dependencies
 * [vibe-d:core] - Basic I/O and concurrency primitives, as well as low level utility functions
-* [vibe-d:stream] - Library of various pluggable stream implementations
 * [checkit] - BDD testing framework for D
 
 
   [vibe-d:core]: <http://vibed.org/>
-  [vibe-d:stream]: <http://vibed.org/>
   [checkit]: <https://github.com/LLC-CERERIS/checkit>
 
 ### Compiling
