@@ -1,5 +1,5 @@
 {
-	"name" : "big-d",
+	"name": "big-d",
 	"description": "MVC Web framework for D",
 	"copyright": "Copyright © 2017, LLC CERERIS",
 	"license": "MIT",
@@ -12,11 +12,26 @@
 	"targetType" : "library",
   "dependencies":
   {
-    "checkit": "~>0.0.5",
-    "vibe-d:core": "~>0.8.1-rc.3"
+    "big-d:log": "*"
   },
   "subPackages":
   [
+    {
+      "name": "log",
+      "description": "Logging system for big.d",
+	    "copyright": "Copyright © 2017, LLC CERERIS",
+	    "license": "MIT",
+	    "homepage": "http://cereris.org",
+	    "authors": [
+		    "LLC CERERIS"
+	    ],
+	    "sourcePaths": ["source/big-d/log"],
+	    "targetType" : "library",
+      "dependencies":
+      {
+        "vibe-d:core": "~>0.8.1-rc.3"
+      }
+    },
     {
       "name": "test",
       "targetName": "bigd-test",
