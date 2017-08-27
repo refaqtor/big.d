@@ -30,13 +30,14 @@ before_install:
 script:
   - dub build
   - dub fetch dscanner
-  - dub run dscanner -- --styleCheck source 2>&1 || echo "Style check!"
-  - dub run dscanner -- --syntaxCheck source 2>&1 || echo "Syntax check!"
-  - dub run dscanner -- --sloc source
+  - dub run dscanner -- --styleCheck log 2>&1 || echo "Style check!"
+  - dub run dscanner -- --syntaxCheck log 2>&1 || echo "Syntax check!"
+  - dub run dscanner -- --sloc log
   - dub run big-d:test --combined
-  - rm test*.lst source 2>&1 || echo "Remove test .lst"
+  - rm test*.lst 2>&1 || echo "Remove test .lst"
   - dub build --build=ddox
   - ./doveralls
+  - cd examples/log/udplogger/basic && dub build && cd ../../../../
 
 deploy:
   provider: pages
