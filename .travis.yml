@@ -40,6 +40,8 @@ script:
   - ./doveralls
   - cd examples/log/udplogger/basic && dub build && cd ../../../../
   - cd examples/log/udplogger/logstash && dub build && cd ../../../../
+  - cd examples/log/tcplogger/basic && dub build && cd ../../../../
+  - cd examples/log/tcplogger/logstash && dub build && cd ../../../../
 
 deploy:
   provider: pages
