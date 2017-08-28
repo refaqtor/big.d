@@ -1,0 +1,17 @@
+{
+	"name" : "udplogstash",
+	"description": "UDP Example for Logstash",
+	"copyright": "Copyright © 2017, LLC CERERIS",
+	"license": "MIT",
+	"homepage": "http://cereris.org",
+	"authors": [
+		"LLC CERERIS"
+	],
+	"sourcePaths": ["source"],
+	"targetName": "udplogstash",
+	"targetType" : "executable",
+  "dependencies":
+  {
+    "big-d:log": "~>0.0.1"
+  }
+}

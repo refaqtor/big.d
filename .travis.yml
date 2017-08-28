@@ -38,6 +38,7 @@ script:
   - dub build --build=ddox
   - ./doveralls
   - cd examples/log/udplogger/basic && dub build && cd ../../../../
+  - cd examples/log/udplogger/logstash && dub build && cd ../../../../
 
 deploy:
   provider: pages
