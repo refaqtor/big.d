@@ -14,8 +14,6 @@ import std.algorithm.searching: canFind;
 import vibe.core.net: listenTCP;
 import vibe.core.core: runEventLoop, exitEventLoop, runTask, sleep;
 
-import std.stdio;
-
 unittest
 {
   scenario!("Success logging to TCP server", ["log"])
