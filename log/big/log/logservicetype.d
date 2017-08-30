@@ -6,6 +6,7 @@
 
 module big.log.logservicetype;
 
+/// LogService basic types
 enum LogServiceType: string
 {
   DEFAULT = "",
