@@ -9,12 +9,6 @@ module big.core.application;
 import dich.container: Container;
 import dich.provider: InstanceProvider;
 
-/// Return Application instance (syntactic sugar).
-Application app()
-{
-  return Application.get();
-}
-
 /// Application instance (Singleton)
 final class Application
 {
@@ -104,4 +98,10 @@ final class Application
     static bool _isInstance;
     __gshared Application _instance;
     __gshared Container _container;
+}
+
+/// Return Application instance (syntactic sugar).
+static Application app()
+{
+  return Application.get();
 }

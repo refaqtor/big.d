@@ -6,6 +6,8 @@
 
 module big.log.logservice;
 
+import big.core.application: app;
+import big.log.logservicetype: LogServiceType;
 import std.experimental.logger : Logger, LogLevel, MultiLogger;
 
 /// This $(D MultiLogger) implementation allows you to get a logger by name
@@ -16,7 +18,7 @@ class LogService : MultiLogger
     Params:
       logLevel = The $(D LogLevel) for the $(D LogService). By default - LogLevel.warning
     */
-    this(in LogLevel logLevel = LogLevel.warning) @safe
+    this(in LogLevel logLevel = LogLevel.warning)
     {
       super(logLevel);
     }
@@ -39,6 +41,25 @@ class LogService : MultiLogger
         }
       }
 
-    return null;
+      return null;
     }
+}
+
+/// Return LogService instance (syntactic sugar).
+static LogService log(in string logName = "")
+{
+  return app().get!LogService(logName);
+}
+
+/// Return LogService instance for big.d (syntactic sugar).
+static LogService bigLog()
+{
+  return app().get!LogService(LogServiceType.BIG_D);
+}
+
+/// Register LogService
+static this()
+{
+  auto logService = new LogService();
+  app().register(logService, LogServiceType.DEFAULT);
 }

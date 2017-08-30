@@ -7,16 +7,35 @@
 	"authors": [
 		"LLC CERERIS"
 	],
-	"sourcePaths": ["core"],
+	"sourcePaths": ["source"],
+  "importPaths": ["source"],
 	"targetName": "bigd",
 	"targetType" : "library",
   "dependencies":
   {
-    "big-d:log": "*",
-    "dich": "~>0.0.2"
+    "big-d:core": "*",
+    "big-d:log": "*"
   },
   "subPackages":
   [
+    {
+      "name": "core",
+      "description": "Core for big.d",
+	    "copyright": "Copyright © 2017, LLC CERERIS",
+	    "license": "MIT",
+	    "homepage": "http://cereris.org",
+	    "authors": [
+		    "LLC CERERIS"
+	    ],
+	    "sourcePaths": ["core"],
+      "importPaths": ["core"],
+	    "targetType" : "library",
+      "dependencies":
+      {
+        "dich": "~>0.0.2",
+        "vibe-d:core": "~>0.8.1-rc.3"
+      }
+    },
     {
       "name": "log",
       "description": "Logging system for big.d",
@@ -31,6 +50,7 @@
 	    "targetType" : "library",
       "dependencies":
       {
+        "big-d:core": "*",
         "vibe-d:core": "~>0.8.1-rc.3"
       }
     },
@@ -47,7 +67,10 @@
         "checkit": "~>0.0.5",
         "dich": "~>0.0.1",
         "vibe-d:core": "~>0.8.1-rc.3"
-      }
+      },
+      "versions": [
+        "BigCustomMain"
+      ]
     }
   ]
 }
