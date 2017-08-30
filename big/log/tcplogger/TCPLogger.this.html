@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8"/>
+<title>Function TCPLogger.this</title>
+<link rel="stylesheet" type="text/css" href="../../../styles/ddox.css"/>
+<link rel="stylesheet" href="../../../prettify/prettify.css" type="text/css"/>
+<script type="text/javascript" src="../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../scripts/ddox.js">/**/</script></head><body onload="setupDdox();"><nav id="main-nav"><noscript><p style="color: red">The search functionality needs JavaScript enabled</p></noscript><div id="symbolSearchPane" style="display: none"><form action="#" method="GET">
+<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/></form><ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../";
+$('#symbolSearchPane').show();</script></div><ul class="tree-view"><li class="tree-view "><div class="package ">big</div><ul class="tree-view"><li class="tree-view "><div class="package "><a href="../../../big/log.html">log</a></div><ul class="tree-view"><li><div class="module "><a href="../../../big/log/logservice.html">logservice</a></div></li><li><div class="module selected"><a href="../../../big/log/tcplogger.html">tcplogger</a></div></li><li><div class="module "><a href="../../../big/log/udplogger.html">udplogger</a></div></li></ul></li></ul></li></ul></nav><div id="main-contents"><h1>Function TCPLogger.this</h1><p>A constructor for the <code class="lang-d"><a href="../../../big/log/tcplogger/TCPLogger.html"><span class="typ">TCPLogger</span></a></code> Logger.
+</p><div class="prototype"><code class="lang-d"><div class="single-prototype">
+<span class="pln">this</span>
+<span class="pun">(</span>
+<br/>
+&nbsp;&nbsp;<span class="kwd">const</span><span class="pun">(</span><span class="typ">string</span><span class="pun">)</span> <span class="pln">host</span><span class="pun">,</span>
+<br/>
+&nbsp;&nbsp;<span class="kwd">const</span><span class="pun">(</span><span class="typ">ushort</span><span class="pun">)</span> <span class="pln">port</span><span class="pun">,</span>
+<br/>
+&nbsp;&nbsp;<span class="kwd">const</span><span class="pun">(</span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">experimental<wbr/></span><span class="pun">.</span><span class="pln">logger<wbr/></span><span class="pun">.</span><span class="pln">core<wbr/></span><span class="pun">.</span><span class="typ">LogLevel</span><span class="pun">)</span> <span class="pln">logLevel</span> <span class="pun">=</span> <span class="kwd">cast</span><span class="pun">(</span><span class="typ">LogLevel</span><span class="pun">)</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">ubyte</span><span class="pun">)</span><span class="lit">96u</span>
+<br/>
+<span class="pun">)</span><span class="pln"> </span><span class="kwd">@safe</span><span class="pun">;</span></div></code></div>
+<section><h2>Parameters</h2>
+<table><col class="caption"><tr><th>Name</th><th>Description</th></tr>
+<tr><td id="host">host</td><td> The host address of the TCP server.</td></tr>
+<tr><td id="port">port</td><td> The port of the TCP server.</td></tr>
+<tr><td id="logLevel">logLevel</td><td> The <code class="lang-d"><span class="typ">LogLevel</span></code> for the <code class="lang-d"><a href="../../../big/log/tcplogger/TCPLogger.html"><span class="typ">TCPLogger</span></a></code>. By default - LogLevel.warning</td></tr>
+</table>
+</section>
+<section><h2>Example</h2>
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">logger1 </span><span class="pun">= </span><span class="kwd">new <a href="../../../big/log/tcplogger/TCPLogger.html"></span><span class="typ">TCPLogger</span></a><span class="pun">(</span><span class="str">"logFile"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">logger2 </span><span class="pun">= </span><span class="kwd">new <a href="../../../big/log/tcplogger/TCPLogger.html"></span><span class="typ">TCPLogger</span></a><span class="pun">(</span><span class="str">"logFile"</span><span class="pun">, </span><span class="typ">LogLevel<wbr/></span><span class="pun">.</span><span class="pln">fatal</span><span class="pun">);</span></code></pre>
+</section>
+
+<footer><table class="license-info"><tr><th>Authors</th><td><p>LLC CERERIS
+</p>
+</td></tr><tr><th>Copyright</th><td><p>2017 © LLC CERERIS
+</p>
+</td></tr><tr><th>License</th><td><p>MIT
+</p>
+</td></tr></table><p class="faint">Generated using the DDOX documentation generator</p></footer></div></body></html>
