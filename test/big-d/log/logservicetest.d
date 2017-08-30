@@ -6,7 +6,8 @@
 
 module test.big.log.logservicetest;
 
-import big.log.logservice;
+import big.core.application: app;
+import big.log.logservice: bigLog, log, LogService, LogServiceType;
 import checkit.assertion;
 import checkit.bdd;
 import std.experimental.logger;
@@ -28,12 +29,13 @@ unittest
 
         then!"Loggers succes get by name"
         ({
-            logService.getLogger("FirstLogger").shouldBeInstanceOf!NullLogger();
-            logService.getLogger("SecondLogger").shouldBeInstanceOf!NullLogger();
+          logService.getLogger("FirstLogger").shouldBeInstanceOf!NullLogger();
+          logService.getLogger("SecondLogger").shouldBeInstanceOf!NullLogger();
         });
       });
     });
   });
+
   scenario!("Get a nonexistent logger by name", ["log"])
   ({
     given!"Empty LogService"
@@ -44,7 +46,28 @@ unittest
       ({
         then!"Get null value"
         ({
-            logService.getLogger("nonexistent_logger").shouldBeNull();
+          logService.getLogger("nonexistent_logger").shouldBeNull();
+        });
+      });
+    });
+  });
+
+  scenario!("Use syntactic sugar", ["log"])
+  ({
+    given!"Default LogService and LogService big.d"
+    ({
+      auto logService = new LogService();
+      auto logServiceBigD = new LogService();
+
+      when!"Register all LogServices"
+      ({
+        app().register(logService);
+        app().register(logServiceBigD, LogServiceType.BIG_D);
+
+        then!"Get all defaults LogServices with syntactic sugar"
+        ({
+          log().shouldEqual(logService);
+          bigLog().shouldEqual(logServiceBigD);
         });
       });
     });
