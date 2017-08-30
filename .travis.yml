@@ -28,9 +28,9 @@ before_install:
 script:
   - dub build
   - dub fetch dscanner
-  - dub run dscanner -- --styleCheck log 2>&1 || echo "Style check!"
-  - dub run dscanner -- --syntaxCheck log 2>&1 || echo "Syntax check!"
-  - dub run dscanner -- --sloc log
+  - dub run dscanner -- --styleCheck log core 2>&1 || echo "Style check!"
+  - dub run dscanner -- --syntaxCheck log core 2>&1 || echo "Syntax check!"
+  - dub run dscanner -- --sloc log core
   - dub run big-d:test --combined
   - rm test*.lst 2>&1 || echo "Remove test .lst"
   - dub build --build=ddox

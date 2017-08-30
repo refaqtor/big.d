@@ -7,12 +7,13 @@
 	"authors": [
 		"LLC CERERIS"
 	],
-	"sourcePaths": ["source"],
+	"sourcePaths": ["core"],
 	"targetName": "bigd",
 	"targetType" : "library",
   "dependencies":
   {
-    "big-d:log": "*"
+    "big-d:log": "*",
+    "dich": "~>0.0.2"
   },
   "subPackages":
   [
@@ -42,7 +43,7 @@
       "sourcePaths": ["test"],
       "dependencies":
       {
-        "big-d:log": "*",
+        "big-d": "*",
         "checkit": "~>0.0.5",
         "dich": "~>0.0.1",
         "vibe-d:core": "~>0.8.1-rc.3"
