@@ -28,14 +28,12 @@ before_install:
 script:
   - dub build
   - dub fetch dscanner
-  - dub run dscanner -- --styleCheck log core 2>&1 || echo "Style check!"
-  - dub run dscanner -- --syntaxCheck log core 2>&1 || echo "Syntax check!"
-  - dub run dscanner -- --sloc log core
+  - dub run dscanner -- --styleCheck log core utils 2>&1 || echo "Style check!"
+  - dub run dscanner -- --syntaxCheck log core utils 2>&1 || echo "Syntax check!"
+  - dub run dscanner -- --sloc log core utils
   - dub run big-d:test --combined
   - rm test*.lst 2>&1 || echo "Remove test .lst"
   - dub build --build=ddox
-  - dub build big-d:log --build=ddox
-  - dub build big-d:core --build=ddox
   - ./doveralls
   - cd examples/log/udplogger/basic && dub build && cd ../../../../
   - cd examples/log/udplogger/logstash && dub build && cd ../../../../

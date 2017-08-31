@@ -10,7 +10,10 @@ import big.core.application: app;
 import big.log.logservicetype: LogServiceType;
 import std.experimental.logger : Logger, LogLevel, MultiLogger;
 
-/// This $(D MultiLogger) implementation allows you to get a logger by name
+/** This $(D MultiLogger) implementation allows you to get a logger by name
+* See_Also: 
+*   `std.experimental.logger`
+*/
 class LogService : MultiLogger
 {
   public:
@@ -45,13 +48,19 @@ class LogService : MultiLogger
     }
 }
 
-/// Return LogService instance (syntactic sugar).
+/** Return LogService instance (syntactic sugar).
+* See_Also: 
+*   `big.core.application.app`
+*/
 static LogService log(in string logName = "")
 {
   return app().get!LogService(logName);
 }
 
-/// Return LogService instance for big.d (syntactic sugar).
+/** Return LogService instance for big.d (syntactic sugar).
+* See_Also: 
+*   `big.core.application.app`
+*/
 static LogService bigLog()
 {
   return app().get!LogService(LogServiceType.BIG_D);

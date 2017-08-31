@@ -3,7 +3,7 @@
 * License: MIT
 * Authors: LLC CERERIS
 * See_Also: 
-*   `big.core.application`
+*   `big.utils.composite`
 */
 
-module big.core;
+module big.utils;

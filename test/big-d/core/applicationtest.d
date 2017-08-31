@@ -15,7 +15,7 @@ class TestService{}
 
 unittest
 {
-  scenario!("Register service", ["application"])
+  scenario!("Register service", ["core"])
   ({
     given!"Service instance"
     ({
