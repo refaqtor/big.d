@@ -14,7 +14,8 @@
   "dependencies":
   {
     "big-d:core": "*",
-    "big-d:log": "*"
+    "big-d:log": "*",
+    "big-d:utils": "*"
   },
   "subPackages":
   [
@@ -53,6 +54,19 @@
         "big-d:core": "*",
         "vibe-d:core": "~>0.8.1-rc.3"
       }
+    },
+    {
+      "name": "utils",
+      "description": "Utils for big.d",
+	    "copyright": "Copyright © 2017, LLC CERERIS",
+	    "license": "MIT",
+	    "homepage": "http://cereris.org",
+	    "authors": [
+		    "LLC CERERIS"
+	    ],
+	    "sourcePaths": ["utils"],
+      "importPaths": ["utils"],
+	    "targetType" : "library"
     },
     {
       "name": "test",
