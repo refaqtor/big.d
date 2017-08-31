@@ -11,7 +11,10 @@ import std.experimental.logger: Logger, LogLevel;
 import std.string: format;
 import vibe.core.net: listenUDP, NetworkAddress, resolveHost, UDPConnection;
 
-/// This $(D Logger) implementation writes log messages to the associated UDP connection.
+/** This $(D Logger) implementation writes log messages to the associated UDP connection.
+* See_Also: 
+*   `std.experimental.logger`
+*/
 class UDPLogger: Logger
 {
   public:
@@ -58,6 +61,8 @@ class UDPLogger: Logger
     }
 
   private:
+    /// $(D NetworkAddress) of remote UDP server for logging
     NetworkAddress _address;
+    /// $(D UDPConnection) of UDP communication between $(D UDPLogger) and UDP server
     UDPConnection _connection;
 }

@@ -71,6 +71,8 @@ class TCPLogger: Logger
       return _connection.connected();
     }
 
+    /// $(D NetworkAddress) of remote TCP server for logging
     NetworkAddress _address;
+    /// $(D TCPConnection) of TCP communication between $(D TCPLogger) and TCP server
     TCPConnection _connection;
 }

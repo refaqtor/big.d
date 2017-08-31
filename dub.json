@@ -17,6 +17,7 @@
     "big-d:log": "*",
     "big-d:utils": "*"
   },
+  "-ddoxFilterArgs": ["--ex", "vibe", "--ex", "dich"],
   "subPackages":
   [
     {

@@ -2,6 +2,11 @@
 * Copyright: 2017 © LLC CERERIS
 * License: MIT
 * Authors: LLC CERERIS
+* See_Also: 
+*   `big.log.logservice`
+*   `big.log.logservicetype`
+*   `big.log.tcplogger`
+*   `big.log.udplogger`
 */
 
 module big.log;

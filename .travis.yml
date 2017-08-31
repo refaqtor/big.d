@@ -34,9 +34,6 @@ script:
   - dub run big-d:test --combined
   - rm test*.lst 2>&1 || echo "Remove test .lst"
   - dub build --build=ddox
-  - dub build big-d:log --build=ddox
-  - dub build big-d:core --build=ddox
-  - dub build big-d:utils --build=ddox
   - ./doveralls
   - cd examples/log/udplogger/basic && dub build && cd ../../../../
   - cd examples/log/udplogger/logstash && dub build && cd ../../../../

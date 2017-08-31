@@ -13,7 +13,7 @@ import dich.provider: InstanceProvider;
 final class Application
 {
   public:
-    /** This method gives a Application instance.
+    /** This method gives a $(D Application) instance.
     * Based on Singleton example.
     *
     * Returns:
@@ -90,13 +90,17 @@ final class Application
     }
 
   private:
+    /// Private constructor for Application (because Singleton)
     this()
     {
       _container = new Container();
     }
 
+    /// Instantiation status of Application instance
     static bool _isInstance;
+    /// Application instance
     __gshared Application _instance;
+    /// Dich container for Dependency injection
     __gshared Container _container;
 }
 
