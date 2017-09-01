@@ -3,6 +3,7 @@
 * License: MIT
 * Authors: LLC CERERIS
 * See_Also: 
+*   `big.log.consolelogger`
 *   `big.log.logservice`
 *   `big.log.logservicetype`
 *   `big.log.tcplogger`
@@ -11,6 +12,7 @@
 
 module big.log;
 
+public import big.log.consolelogger;
 public import big.log.logservice;
 public import big.log.logservicetype;
 public import big.log.tcplogger;
