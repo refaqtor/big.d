@@ -9,8 +9,8 @@ module big.log.consolelogger;
 import std.datetime: DateTime;
 import std.experimental.logger: Logger, LogLevel;
 import std.format: formattedWrite;
-import std.string: format;
 import std.stdio: File, stdout;
+import std.string: format;
 
 /// This $(D Logger) implementation writes log messages to standart STDOUT
 class ConsoleLogger: Logger

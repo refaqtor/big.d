@@ -9,11 +9,12 @@ module big.log.colorconsolelogger;
 import std.datetime: DateTime;
 import std.experimental.logger: Logger, LogLevel;
 import std.format: formattedWrite;
-import std.string: format;
 import std.stdio: File, stdout;
+import std.string: format;
 
 version(Windows)
 {
+  /// Color for Windows console
   enum Color : ushort
   {
     black        = 0, /// The black color
@@ -66,12 +67,12 @@ else version(Posix)
   /// Text style for Posix console
   enum
   {
-    UNDERLINE_ENABLE  = 4,
-    UNDERLINE_DISABLE = 24,
-    STRIKE_ENABLE     = 9,
-    STRIKE_DISABLE    = 29,
-    BOLD_ENABLE       = 1,
-    BOLD_DISABLE      = 21
+    UNDERLINE_ENABLE  = 4,  /// Enable underline text to console
+    UNDERLINE_DISABLE = 24, /// Disable underline text to console
+    STRIKE_ENABLE     = 9,  /// Enable Strike text to console
+    STRIKE_DISABLE    = 29, /// Disable Strike text to console
+    BOLD_ENABLE       = 1,  /// Enable Bold text to console
+    BOLD_DISABLE      = 21  /// Disable Bold text to console
   }
 }
 
