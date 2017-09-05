@@ -46,6 +46,13 @@ unittest
           leaf.get!Attribute("value").getValue().shouldBeBetween(2.2, 2.4);
 
           leaf.get!Attribute("null").shouldBeNull();
+
+          leaf.get!Attribute("value").setValue(Variant(1));
+          leaf.get!Attribute("value").setName("qwerty");
+          leaf.get!Attribute("value").getValue().shouldEqual(1);
+          leaf.get!Attribute("value").getName().shouldEqual("qwerty");
+          root.remove("SubTestConfig");
+          root.get!Attribute("SubTestConfig").shouldBeNull();
         });
       });
     });

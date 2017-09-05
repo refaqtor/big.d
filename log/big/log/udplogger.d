@@ -19,16 +19,16 @@ class UDPLogger: Logger
 {
   public:
     /** A constructor for the $(D UDPLogger) Logger.
-    Params:
-      host = The host address of the UDP server.
-      port = The port of the UDP server.
-      logLevel = The $(D LogLevel) for the $(D UDPLogger). By default - LogLevel.warning
-
-    Example:
-    -------------
-    auto logger1 = new UDPLogger("logFile");
-    auto logger2 = new UDPLogger("logFile", LogLevel.fatal);
-    -------------
+    * Params:
+    *   host = The host address of the UDP server.
+    *   port = The port of the UDP server.
+    *   logLevel = The $(D LogLevel) for the $(D UDPLogger). By default - LogLevel.warning
+    * 
+    * Example:
+    * -------------
+    * auto logger1 = new UDPLogger("logFile");
+    * auto logger2 = new UDPLogger("logFile", LogLevel.fatal);
+    * -------------
     */
     this(in string host, in ushort port, in LogLevel logLevel = LogLevel.warning) @safe
     {
@@ -39,7 +39,7 @@ class UDPLogger: Logger
     }
 
     /** This methods overrides the base class method and delegates the
-    $(D LogEntry) data to the actual implementation.
+    * $(D LogEntry) data to the actual implementation.
     */
     override void writeLogMsg(ref LogEntry payload) @trusted
     {
@@ -53,7 +53,7 @@ class UDPLogger: Logger
                                                                           payload.timestamp.fracSecs.total!"msecs");
       try
       {
-        _connection.send(cast(ubyte[]) "%s [%s] %s".format(dateTimeISO, payload.logLevel, payload.msg), &_address);
+        _connection.send(cast(ubyte[]) "%s [%s] %s\n\r".format(dateTimeISO, payload.logLevel, payload.msg), &_address);
       }
       catch(Exception e)
       {

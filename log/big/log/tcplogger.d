@@ -16,16 +16,16 @@ class TCPLogger: Logger
 {
   public:
     /** A constructor for the $(D TCPLogger) Logger.
-    Params:
-      host = The host address of the TCP server.
-      port = The port of the TCP server.
-      logLevel = The $(D LogLevel) for the $(D TCPLogger). By default - LogLevel.warning
-
-    Example:
-    -------------
-    auto logger1 = new TCPLogger("logFile");
-    auto logger2 = new TCPLogger("logFile", LogLevel.fatal);
-    -------------
+    * Params:
+    *   host = The host address of the TCP server.
+    *   port = The port of the TCP server.
+    *   logLevel = The $(D LogLevel) for the $(D TCPLogger). By default - LogLevel.warning
+    *
+    * Example:
+    * -------------
+    * auto logger1 = new TCPLogger("logFile");
+    * auto logger2 = new TCPLogger("logFile", LogLevel.fatal);
+    * -------------
     */
     this(in string host, in ushort port, in LogLevel logLevel = LogLevel.warning) @safe
     {
@@ -35,7 +35,7 @@ class TCPLogger: Logger
     }
 
     /** This methods overrides the base class method and delegates the
-    $(D LogEntry) data to the actual implementation.
+    * $(D LogEntry) data to the actual implementation.
     */
     override void writeLogMsg(ref LogEntry payload) @trusted
     {
@@ -49,11 +49,14 @@ class TCPLogger: Logger
                                                                           dateTime.minute,
                                                                           dateTime.second,
                                                                           payload.timestamp.fracSecs.total!"msecs");
-        _connection.write("%s [%s] %s".format(dateTimeISO, payload.logLevel, payload.msg));
+        _connection.write("%s [%s] %s\n\r".format(dateTimeISO, payload.logLevel, payload.msg));
       }
     }
 
   private:
+    /** Try connect to TCP server
+    * Returns: $(D bool) result of connection
+    */
     bool tryConnectToTCP()
     {
       try
