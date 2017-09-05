@@ -4,7 +4,7 @@
 * Authors: LLC CERERIS
 */
 
-module test.big.log.conaoleloggertest;
+module test.big.log.consoleloggertest;
 
 import big.log.consolelogger;
 import checkit.assertion;
@@ -29,7 +29,7 @@ unittest
         logger.info("Info message\n");
         outFile.close();
 
-        then!"UDP server receive custom message"
+        then!"Console logger success log message"
         ({
           auto data = readText("console_test.log");
           remove("console_test.log");
