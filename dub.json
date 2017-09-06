@@ -15,9 +15,11 @@
   {
     "big-d:core": "*",
     "big-d:log": "*",
-    "big-d:utils": "*"
+    "big-d:config": "*",
+    "big-d:utils": "*",
+    "dich": "~>0.0.2"
   },
-  "-ddoxFilterArgs": ["--ex", "vibe", "--ex", "dich"],
+  "-ddoxFilterArgs": ["--ex", "vibe", "--ex", "dich", "--ex", "dyaml", "--ex", "tinyendian", "--ex", "yaml"],
   "subPackages":
   [
     {
@@ -57,6 +59,25 @@
       }
     },
     {
+      "name": "config",
+      "description": "Config system for big.d",
+      "copyright": "Copyright © 2017, LLC CERERIS",
+      "license": "MIT",
+      "homepage": "http://cereris.org",
+      "authors": [
+        "LLC CERERIS"
+      ],
+      "sourcePaths": ["config"],
+      "importPaths": ["config"],
+      "targetType" : "library",
+      "dependencies":
+      {
+        "big-d:utils": "*",
+        "vibe-d:core": "~>0.8.1-rc.3",
+        "dyaml": "~>0.6.3"
+      }
+    },
+    {
       "name": "utils",
       "description": "Utils for big.d",
 	    "copyright": "Copyright © 2017, LLC CERERIS",
@@ -74,13 +95,14 @@
       "targetName": "bigd-test",
       "description": "Tests for big.d",
       "targetType": "executable",
-      "buildOptions": ["unittests", "coverage"],
+      "buildOptions": ["unittests"],
       "sourcePaths": ["test"],
       "dependencies":
       {
         "big-d": "*",
         "checkit": "~>0.0.5",
         "dich": "~>0.0.1",
+        "dyaml": "~>0.6.3",
         "vibe-d:core": "~>0.8.1-rc.3"
       },
       "versions": [

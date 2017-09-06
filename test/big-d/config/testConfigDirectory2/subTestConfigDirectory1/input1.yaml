@@ -1,0 +1,4 @@
+- CustomService:
+    - field1: Some string
+    - field2 : 2
+    - field3 : false

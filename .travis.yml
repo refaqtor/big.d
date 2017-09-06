@@ -9,10 +9,8 @@ addons:
     - libssl-dev
 
 d:
-  - ldc-1.2.0
   - ldc-1.3.0
   - ldc-beta
-  - dmd-2.074.1
   - dmd-2.075.1
   - dmd-beta
 
@@ -25,20 +23,34 @@ before_install:
   - wget -O doveralls "https://github.com/ColdenCullen/doveralls/releases/download/v1.3.1/doveralls_linux_travis"
   - chmod +x doveralls
 
-script:
-  - dub build
-  - dub fetch dscanner
-  - dub run dscanner -- --styleCheck log core utils 2>&1 || echo "Style check!"
-  - dub run dscanner -- --syntaxCheck log core utils 2>&1 || echo "Syntax check!"
-  - dub run dscanner -- --sloc log core utils
-  - dub run big-d:test --combined
-  - rm test*.lst 2>&1 || echo "Remove test .lst"
-  - dub build --build=ddox --combined
-  - ./doveralls
-  - cd examples/log/udplogger/basic && dub build && cd ../../../../
-  - cd examples/log/udplogger/logstash && dub build && cd ../../../../
-  - cd examples/log/tcplogger/basic && dub build && cd ../../../../
-  - cd examples/log/tcplogger/logstash && dub build && cd ../../../../
+jobs:
+  include:
+    - stage: test
+      script: dub run big-d:test
+    - stage: dscanner
+      d: dmd-beta
+      script: 
+        - dub fetch dscanner
+        - dub run dscanner -- --styleCheck log core utils config 2>&1 || echo "Style check!"
+        - dub run dscanner -- --syntaxCheck log core utils config 2>&1 || echo "Syntax check!"
+        - dub run dscanner -- --sloc log core utils config
+    - stage: coverage
+      d: dmd-beta
+      script: 
+        - dub run big-d:test --combined --build=unittest-cov
+        - rm test*.lst 2>&1 || echo "Remove test .lst"
+        - ./doveralls
+    - stage: doc
+      d: dmd-beta
+      script: dub build --build=ddox --combined
+    - stage: examples
+      script:
+        - cd examples/log/udplogger/basic && dub build && cd ../../../../
+        - cd examples/log/udplogger/logstash && dub build && cd ../../../../
+        - cd examples/log/tcplogger/basic && dub build && cd ../../../../
+        - cd examples/log/tcplogger/logstash && dub build && cd ../../../../
+
+script: dub build
 
 deploy:
   provider: pages

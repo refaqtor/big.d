@@ -18,3 +18,5 @@ bigd-test
 Doveralls
 
 .project
+.idea/
+big.d.iml

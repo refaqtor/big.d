@@ -1,0 +1,23 @@
+- service1: field1
+
+- service2 : {field1: 1, field2: 2}
+
+- {service3: field1, service4: field1}
+
+- service5:
+    - field1
+    - field2
+    - field3
+    - field4
+    
+- service6:
+  - field1: 1
+  - field2:
+      - subField1: 1
+      - subField2
+      
+- service7:
+  - field1: 1
+  
+- service7:
+  - field1: 2

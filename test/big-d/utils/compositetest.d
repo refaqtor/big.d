@@ -9,6 +9,8 @@ module test.big.utils.compositetest;
 import big.utils.composite;
 import checkit.assertion;
 import checkit.bdd;
+import std.conv;
+import std.variant: Variant;
 
 struct TestValue
 {
@@ -53,6 +55,43 @@ unittest
           leaf.get!Attribute("value").getName().shouldEqual("qwerty");
           root.remove("SubTestConfig");
           root.get!Attribute("SubTestConfig").shouldBeNull();
+        });
+      });
+    });
+  });
+  scenario!("Set component name and value", ["utils"])
+  ({
+    given!"Attribute object"
+    ({
+      auto root = new Attribute("name", "value");
+
+      when!"Set some name and value for given object"
+      ({
+        root.setName("newName");
+        root.setValue(to!Variant("newValue"));
+
+        then!"Get correct object name and value"
+        ({
+          root.getName.shouldEqual("newName");
+          root.getValue.shouldEqual("newValue");
+        });
+      });
+    });
+  });
+  scenario!("Remove child component from composite object", ["utils"])
+  ({
+    given!"Composite object"
+    ({
+      auto root = new Composite("name");
+      root.add(new Attribute("name", "value"));
+
+      when!"Remove child attribute from composite object"
+      ({
+        root.remove("name");
+
+        then!"After trying to get the child attribute from composite object get null value"
+        ({
+          root.get!Attribute("name").shouldBeNull();
         });
       });
     });

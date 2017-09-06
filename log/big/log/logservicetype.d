@@ -7,7 +7,7 @@
 module big.log.logservicetype;
 
 /** LogService basic types
-* See_Also: 
+* See_Also:
 *   `big.log.logservice`
 */
 enum LogServiceType: string

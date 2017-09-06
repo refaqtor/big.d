@@ -16,6 +16,7 @@ class Component
     * Params:
     *  name = The name of component.
     */
+  public:
     this(string name)
     {
       _name = name;
@@ -101,10 +102,10 @@ class Composite: Component
     {
       super(name);
     }
-    
+
     /** Add $(D Component) into $(D Composite) object
     * Params:
-    *   component = The $(D Component) which be add to $(D Composite) 
+    *   component = The $(D Component) which be add to $(D Composite)
     */
     void add(Component component)
     {
@@ -113,7 +114,7 @@ class Composite: Component
 
     /** Remove $(D Component) from $(D Composite) object
     * Params:
-    *   name = The name of $(D Component) which be removed from $(D Composite) 
+    *   name = The name of $(D Component) which be removed from $(D Composite)
     */
     void remove(string name)
     {
@@ -122,7 +123,7 @@ class Composite: Component
 
     /** Get $(D Component) from $(D Composite) object
     * Params:
-    *   name = The name of $(D Component) which be get from $(D Composite) 
+    *   name = The name of $(D Component) which be get from $(D Composite)
     *
     * Returns: $(D Component) if $(D Composite) contain $(D Component) with this name or $(D null).
     */

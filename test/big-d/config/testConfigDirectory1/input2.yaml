@@ -1,0 +1,5 @@
+- service8:
+  - long: 1
+  - string: two
+  - bool: true
+  - real: 1.54
