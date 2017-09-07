@@ -102,6 +102,37 @@ unittest
           logger.shouldBeInstanceOf!TCPLogger();
           logger.logLevel().shouldEqual(LogLevel.error);
         });	
+        
+        then!"LogServiceInitManager init default"
+        ({
+          auto loggerData = new Composite("Logger");
+          config._handler([loggerData]);
+          log().getLogger("").shouldBeNull();
+          
+          loggerData.remove("level");
+          loggerData.remove("name");
+          loggerData.add(new Attribute("level", "critical"));
+          loggerData.add(new Attribute("name", "1"));
+          config._handler([loggerData]);
+          log().getLogger("1").shouldBeInstanceOf!ConsoleLogger();
+          log().getLogger("1").logLevel().shouldEqual(LogLevel.critical);
+          
+          loggerData.remove("level");
+          loggerData.remove("name");
+          loggerData.add(new Attribute("level", "fatal"));
+          loggerData.add(new Attribute("name", "2"));
+          config._handler([loggerData]);
+          log().getLogger("2").shouldBeInstanceOf!ConsoleLogger();
+          log().getLogger("2").logLevel().shouldEqual(LogLevel.fatal);
+          
+          loggerData.remove("level");
+          loggerData.remove("name");
+          loggerData.add(new Attribute("level", "all"));
+          loggerData.add(new Attribute("name", "3"));
+          config._handler([loggerData]);
+          log().getLogger("3").shouldBeInstanceOf!ConsoleLogger();
+          log().getLogger("3").logLevel().shouldEqual(LogLevel.all);
+        });
       });
     });
   });
