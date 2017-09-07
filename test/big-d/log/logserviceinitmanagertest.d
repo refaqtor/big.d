@@ -138,7 +138,6 @@ unittest
           loggerData.add(new Attribute("level", "cereris"));
           loggerData.add(new Attribute("name", "4"));
           config._handler([loggerData]);
-          log().getLogger("4").shouldBeNull();
           log().getLogger("4").shouldBeInstanceOf!ConsoleLogger();
           log().getLogger("4").logLevel().shouldEqual(LogLevel.off);
           
