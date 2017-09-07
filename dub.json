@@ -17,6 +17,7 @@
     "big-d:log": "*",
     "big-d:config": "*",
     "big-d:utils": "*",
+    "big-d:router": "*",
     "dich": "~>0.0.2"
   },
   "-ddoxFilterArgs": ["--ex", "vibe", "--ex", "dich", "--ex", "dyaml", "--ex", "tinyendian", "--ex", "yaml"],
@@ -108,6 +109,7 @@
       {
         "big-d:utils": "*",
         "big-d:core": "*",
+        "big-d:log": "*",
         "vibe-d:core": "~>0.8.1-rc.3"
       }
     },    

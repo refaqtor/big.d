@@ -10,6 +10,7 @@ import big.config.configservice: config;
 import big.core.application: app, Application;
 import big.log.logservice: bigLog, LogService;
 import big.log.logserviceinitmanager: LogServiceInitManager;
+import big.router.routerserviceinitmanager: RouterServiceInitManager;
 import big.log.logservicetype: LogServiceType;
 import vibe.core.core: lowerPrivileges, runEventLoop;
 
@@ -27,6 +28,8 @@ else
     
     /// Init LogServiceInitManager
     auto logServiceInitManager = new LogServiceInitManager;
+    /// Init RouterServiceInitManager
+    auto routerServiceInitManager = new RouterServiceInitManager;
   }
 
   /// main function for run big.d framework

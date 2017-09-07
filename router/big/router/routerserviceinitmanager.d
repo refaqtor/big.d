@@ -4,15 +4,17 @@
 * Authors: LLC CERERIS
 */
 
-module big.log.routerserviceinitmanager;
+module big.router.routerserviceinitmanager;
 
-import big.config.configservice: config;
+import big.config.configservice: config, ConfigService;
 import std.functional: toDelegate;
+import big.utils.composite;
+import big.router.routerservice: routerService, Rout;
+import big.log.logservice: bigLog;
 
 enum
 {
   /// String name for load from config file
-  ROUTER_SERVICE_CONFIG_TYPE = "Router",
   ROUT_CONFIG_TYPE = "Rout",
   ROUT_SOURCE = "source",
   ROUT_TYPE = "type",
@@ -25,88 +27,70 @@ final class RouterServiceInitManager
 {
   public:
     /// A constructor for the $(D RouterServiceInitManager)
-    this()
+    this(ConfigService service = config())
     {
-      config().subscribe(ROUTER_SERVICE_CONFIG_TYPE, toDelegate(&init));
+      service.subscribe(ROUT_CONFIG_TYPE, toDelegate(&init));
     }
     
   private:
-    /** Init LogService from configuration
+    /** Init RouterServise from configuration
     * Params:
-    *		configs = All configuration data for LogServise
+    *		configs = All configuration data for RouterServise
     */
     void init(Composite[] configs)
-    {   
-      foreach(Composite loggerConfig; configs)
+    {      
+      foreach(Composite routerConfig; configs)
       {
-        auto groupAttribute = loggerConfig.get!Attribute(LOG_SERVICE_GROUP);
-        string group =  groupAttribute is null ? DEFAULT_LOG_SERVICE_GROUP : groupAttribute.getValue().get!string();
-        
-        auto nameAttribute = loggerConfig.get!Attribute(LOG_SERVICE_NAME);
-        string name =  nameAttribute is null ? DEFAULT_LOG_SERVICE_NAME : nameAttribute.getValue().get!string();
-        
-        auto typeAttribute = loggerConfig.get!Attribute(LOG_SERVICE_TYPE);
-        string type =  typeAttribute is null ? DEFAULT_LOG_SERVICE_TYPE : typeAttribute.getValue().get!string();
-        
-        auto levelAttribute = loggerConfig.get!Attribute(LOG_SERVICE_LEVEL);
-        string level =  levelAttribute is null ? DEFAULT_LOG_SERVICE_LEVEL : levelAttribute.getValue().get!string();
-        LogLevel logLevel;
-        
-        switch(level)
+        auto sourceAttribute = routerConfig.get!Attribute(ROUT_SOURCE);
+        string source;
+        if(sourceAttribute is null)
         {
-          default:
-            logLevel = LogLevel.off;
-            break;
-          case "trace":
-            logLevel = LogLevel.trace;
-            break;
-          case "info":
-            logLevel = LogLevel.info;
-            break;
-          case "warning":
-            logLevel = LogLevel.warning;
-            break;
-          case "error":
-            logLevel = LogLevel.error;
-            break;
-          case "critical":
-            logLevel = LogLevel.critical;
-            break;
-          case "fatal":
-            logLevel = LogLevel.fatal;
-            break;
-          case "all":
-            logLevel = LogLevel.all;
-            break;
+          bigLog.warning("Rout without 'source' will be ignored! Check your config!");
+          continue;
+        }
+        else
+        {
+          source = sourceAttribute.getValue().get!string();
         }
         
-        /// Create LogService for group if needed      
-        if(app().get!LogService(group) is null)
+        auto typeAttribute = routerConfig.get!Attribute(ROUT_TYPE);
+        string type;
+        if(typeAttribute is null)
         {
-          bigLog().trace("Create LogService: " ~ group);
-          auto logService = new LogService();
-          app().register(logService, group);
+          bigLog.warning("Rout without 'type' will be ignored! Check your config!");
+          continue;
         }
-     
-        Logger logger = null;
-        
-        switch(type)
+        else
         {
-          default: break;
-          case "color":
-            logger = new ColorConsoleLogger(logLevel);
-            break;
-          case "console":
-            logger = new ConsoleLogger(logLevel);
-            break;
-
-          /// TODO: Add UDP/TCP logger  
+          type = typeAttribute.getValue().get!string();
         }
         
-        if(logger)
+        auto targetAttribute = routerConfig.get!Attribute(ROUT_TARGET);
+        string target;
+        if(targetAttribute is null)
         {
-          app().get!LogService(group).insertLogger(name, logger);
+          bigLog.warning("Rout without 'target' will be ignored! Check your config!");
+          continue;
         }
+        else
+        {
+          target = targetAttribute.getValue().get!string();
+        }
+        
+        auto middlewareAttribute = routerConfig.get!Attribute(ROUT_MIDDLEWARE);
+        string middleware = null;
+        if(!(middlewareAttribute is null))
+        {
+          middleware = middlewareAttribute.getValue().get!string();
+        }
+        
+        Rout newRout;
+        newRout.source = source;
+        newRout.type = type;
+        newRout.target = target;
+        newRout.middleware = middleware;
+        
+        routerService.insertRout(newRout);
       }
     }    
 }

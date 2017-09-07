@@ -8,6 +8,16 @@ module big.router.routerservice;
 
 import big.utils.composite;
 import big.log.logservice: bigLog, LogService;
+import std.conv;
+import std.algorithm: canFind;
+import big.core.application: app;
+import std.regex: matchFirst;
+
+struct Middleware
+{
+  string middlewareName;
+  Composite delegate(Composite) middlewareHandler;
+}
 
 struct Target
 {
@@ -19,8 +29,8 @@ struct Rout
 {
   string source;
   string type;
-  string[] targets;
-  Middleware middleware;
+  string target;
+  string middleware;
 }
 
 class RouterService
@@ -33,82 +43,71 @@ class RouterService
     
     void routing(Composite data)
     {
+      auto sourceAttribute = data.get!Attribute("source");
       string source;
-      if((source = getSourceNameFromData(data.get!Component("sourceName"))) is null)
+      if(sourceAttribute is null)
       {
+        bigLog.warning("Data without source can't be routed!");
         return;
+      }
+      else
+      {
+        source = sourceAttribute.getValue().get!string();
       }
       
       foreach(Rout rout; _routs)
       {
-        if(rout.source == source)
-        {
-          //middleware...
-          foreach(string targetName; rout.targets)
-          {
-            if(targetName == "*") //send data for all targets...
-            {
-              foreach(Target target; _targets)
-              {
-                target.targetHandler(data);
-              }
-            }
-            else //send data for the specified targets...
-            {
-              foreach(Target target; _targets)
-              {
-                if(targetName == target.name)
-                {
-                  target.targetHandler(data);
-                }
-              }
-            }
-          }
-        }
+//        auto  = matchFirst("a = 42;", regex(`(?P<var>\w+)\s*=\s*(?P<value>\d+);`));
       }
     }
-    
+
+    void addMiddleware(string middlewareName, Composite delegate(Composite) middlewareHandler)
+    {
+      Middleware newMiddleware;
+      newMiddleware.middlewareName = middlewareName;
+      newMiddleware.middlewareHandler = middlewareHandler;
+      _middlewares ~= newMiddleware;
+    }
+   
     void addTarget(string targetName, void delegate(Composite) targetHandler)
     {
       Target newTarget;
-      newTarget.name = targetName;
+      newTarget.targetName = targetName;
       newTarget.targetHandler = targetHandler;
       _targets ~= newTarget;
     }
     
-    void addRout(string sourceName, string[] targets, Middleware middleware)
+    void insertRout(Rout newRout)
     {
-      Rout newRout;
-      newRout.name = sourceName;
-      newRout.targets = targets;
-      newRout.middleware = middleware;
-      _routs ~= newRout;
+      if(canFind(_routs, newRout))
+      {
+        bigLog.warning("Several equivalent routs were found in the configuration files!" ~
+          "Routs duplicates will be ignored!");
+      }
+      else
+      {
+        _routs ~= newRout;
+      }
     }
     
   private:
     Rout[] _routs;
     Target[] _targets;
-    
-    string getSourceNameFromData(Component data)
-    {
-      string result = null;
-      if(data is null)
-      {
-        bigLog.warning("You can't route data for which no source is specified");
-        return result;
-      }
-      else
-      {
-        if(data.isComposite())
-        {
-          bigLog.warning("You can't route data with composite source");
-          return result;
-        }
-        else
-        {
-          result = data.get!Attribute("source").getValue();
-          return result;
-        }
-      }
-    }
+    Middleware[] _middlewares;
+}
+
+/** Return RouterService instance for big.d (syntactic sugar).
+* See_Also:
+*   `big.core.application.app`
+*/
+static RouterService routerService()
+{
+  return app().get!RouterService();
+}
+
+/// Register default RouterService
+static this()
+{
+  auto routerService = new RouterService();
+  app().register(routerService);
 }

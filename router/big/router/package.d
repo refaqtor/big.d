@@ -4,8 +4,10 @@
 * Authors: LLC CERERIS
 * See_Also:
 *   `big.log.routerservice`
+*	`big.log.routerserviceinitmanager`
 */
 
 module big.router;
 
 public import big.router.routerservice;
+public import big.router.routerserviceinitmanager;
