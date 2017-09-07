@@ -12,6 +12,7 @@ import checkit.assertion;
 import checkit.bdd;
 
 class TestService{}
+class TestServiseNotExist{}
 
 unittest
 {
@@ -49,6 +50,15 @@ unittest
         then!"Success get Test instance"
         ({
           app().get!TestService("test1").shouldBeInstanceOf!TestService();
+        });
+      });
+      
+      when!"Get non exist service"
+      ({
+        then!"Return null"
+        ({
+          app().get!TestService("CERERIS").shouldBeNull();
+          app().get!TestServiseNotExist().shouldBeNull();
         });
       });
     });

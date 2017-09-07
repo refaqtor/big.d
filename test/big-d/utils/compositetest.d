@@ -49,6 +49,16 @@ unittest
 
           leaf.get!Attribute("null").shouldBeNull();
 
+          to!string(root).shouldEqual("Composite(name: 'root', children: " ~
+            "[\"name\":Attribute(name: 'name', value: 'TestConfig'), \"version\"" ~ 
+            ":Attribute(name: 'version', value: '5'), \"SubTestConfig\"" ~ 
+            ":Composite(name: 'SubTestConfig', children: [\"value\":Attribute(name: " ~ 
+            "'value', value: '2.33')]), \"address\":Attribute(name: 'address', value: " ~ 
+            "'TestValue(\"\")')])");
+          
+          ("version" in root).shouldBeTrue();
+          ("cereris" in root).shouldBeFalse();
+
           leaf.get!Attribute("value").setValue(Variant(1));
           leaf.get!Attribute("value").setName("qwerty");
           leaf.get!Attribute("value").getValue().shouldEqual(1);

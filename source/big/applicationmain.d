@@ -20,11 +20,7 @@ version (BigCustomMain)
 else
 {
   static this()
-  {
-    /// LogService for logging big.d messages
-    auto innerLogService = new LogService();
-    app().register(innerLogService, LogServiceType.BIG_D);
-    
+  {  
     /// Init LogServiceInitManager
     auto logServiceInitManager = new LogServiceInitManager;
   }
@@ -40,6 +36,7 @@ else
 
     try
     {
+      /// TODO: get path from command line arguments
       /// Load config files
       config().load("./config");
       

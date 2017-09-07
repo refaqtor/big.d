@@ -52,6 +52,12 @@ class ConsoleLogger: Logger
         _out.flush();
       }
     }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "ConsoleLogger(level: '%s')".format(logLevel()); 
+    }
 
   private:
     /// $(D File) output for write log messages

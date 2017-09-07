@@ -6,8 +6,8 @@
 
 module big.config.configservice;
 
-import big.core.application: app;
 import big.config.yamlconfigreader;
+import big.core.application: app;
 import big.utils.bigdexception;
 import big.utils.composite;
 import std.file;
@@ -32,7 +32,7 @@ class ConfigService
       name = The name of service (By this name configurations
              in configuration files will be searched)
     */
-    void subscribe(string name, void delegate(Composite[]) handler)
+    void subscribe(string name, ConfigHandler handler)
     { 
       _handlersMap[name] ~= handler;
       _configDataMap[name] = [];

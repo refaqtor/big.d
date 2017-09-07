@@ -10,14 +10,14 @@ import big.config.configservice: config;
 import big.core.application: app;
 import big.log.logservicetype: LogServiceType;
 import big.utils.composite: Composite;
-import std.functional: toDelegate;
 import std.experimental.logger : Logger, LogLevel, MultiLogger;
+import std.functional: toDelegate;
 
 /** This $(D MultiLogger) implementation allows you to get a logger by name
 * See_Also:
 *   `std.experimental.logger`
 */
-class LogService : MultiLogger
+final class LogService : MultiLogger
 {
   public:
     /** A constructor for the $(D LogService) MultiLogger.
@@ -69,9 +69,13 @@ static LogService bigLog()
   return app().get!LogService(LogServiceType.BIG_D);
 }
 
-/// Register default LogService
+/// Register default LogServices
 static this()
 {
   auto logService = new LogService();
   app().register(logService);
+  
+  /// LogService for logging big.d messages
+  auto innerLogService = new LogService();
+  app().register(innerLogService, LogServiceType.BIG_D);
 }

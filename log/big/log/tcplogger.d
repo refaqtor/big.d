@@ -52,6 +52,12 @@ class TCPLogger: Logger
         _connection.write("%s [%s] %s\n\r".format(dateTimeISO, payload.logLevel, payload.msg));
       }
     }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "TCPLogger(host: %s, port: %d, level: '%s')".format(_address.toAddressString(), _address.port, logLevel()); 
+    }
 
   private:
     /** Try connect to TCP server

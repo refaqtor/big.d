@@ -133,7 +133,7 @@ class ColorConsoleLogger: Logger
             break;
           case LogLevel.fatal: 
             setTextColor(Color.lightCyan, Color.lightCyan, writer);
-            break;          
+            break;
         }
 
         writer.put("  ");
@@ -167,6 +167,12 @@ class ColorConsoleLogger: Logger
         formattedWrite(writer, "] %s\n", payload.msg);
         _out.flush();
       }
+    }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "ColorConsoleLogger(level: '%s')".format(logLevel()); 
     }
 
   private:
