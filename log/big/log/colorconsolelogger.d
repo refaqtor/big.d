@@ -133,7 +133,7 @@ class ColorConsoleLogger: Logger
             break;
           case LogLevel.fatal: 
             setTextColor(Color.lightCyan, Color.lightCyan, writer);
-            break;          
+            break;
         }
 
         writer.put("  ");

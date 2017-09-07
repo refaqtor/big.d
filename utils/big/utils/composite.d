@@ -6,6 +6,8 @@
 
 module big.utils.composite;
 
+import std.conv;
+import std.string: format;
 import std.variant: Variant;
 
 /// Base component for make composite object
@@ -37,6 +39,12 @@ class Component
     void setName(in string name)
     {
       _name = name;
+    }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "Component(name: '%s')".format(_name); 
     }
 
     /// Return $(D true) if $(D Component) is $(D Composite) and $(D false) if $(D Attribute)
@@ -83,6 +91,12 @@ class Attribute: Component
     override bool isComposite()
     {
       return false;
+    }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "Attribute(name: '%s', value: '%s')".format(getName(), _value); 
     }
 
   private:
@@ -136,11 +150,23 @@ class Composite: Component
 
       return null;
     }
+    
+    /// Return result of find Component by name
+    bool opBinaryRight(string op)(string rth) if(op == "in")
+    {
+      return (rth in _childs) !is null;
+    }
 
     /// Return $(D true)
     override bool isComposite()
     {
       return true;
+    }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "Composite(name: '%s', children: %s)".format(getName(), to!string(_childs)); 
     }
 
   private:
