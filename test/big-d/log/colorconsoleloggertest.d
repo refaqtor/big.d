@@ -31,6 +31,13 @@ unittest
         logger.warning("Warning message\n");
         logger.error("Error message\n");
         logger.critical("Critical message\n");
+        try
+        {
+          logger.fatal("Fatal message\n");
+        }
+        catch(Throwable e)
+        {}
+        
         outFile.close();
 
         then!"Color logger succes logging message"
@@ -40,16 +47,18 @@ unittest
           
           version(Posix)
           {
-            (canFind(data, "\033[0;256;266;24;29;21m  \033[0;256;266;24;29;21m [\033[0;256;266;24;29;21mtrace" ~
+            (canFind(data, "\033[1;34;44;24;29;21m  \033[0;256;266;24;29;21m [\033[1;34;266;24;29;21mtrace" ~
                            "\033[0;256;266;24;29;21m] Trace message")).shouldBeTrue();  
-            (canFind(data, "\033[1;34;44;24;29;21m  \033[0;256;266;24;29;21m [\033[1;34;266;24;29;21minfo" ~
+            (canFind(data, "\033[0;32;42;24;29;21m  \033[0;256;266;24;29;21m [\033[0;32;266;24;29;21minfo" ~
                            "\033[0;256;266;24;29;21m] Info message")).shouldBeTrue();  
-            (canFind(data, "\033[1;33;43;24;29;21m  \033[0;256;266;24;29;21m [\033[1;33;266;24;29;21mwarning" ~
+            (canFind(data, "\033[0;33;43;24;29;21m  \033[0;256;266;24;29;21m [\033[0;33;266;24;29;21mwarning" ~
                            "\033[0;256;266;24;29;21m] Warning message")).shouldBeTrue();
             (canFind(data, "\033[1;31;41;24;29;21m  \033[0;256;266;24;29;21m [\033[1;31;266;24;29;21merror" ~
                            "\033[0;256;266;24;29;21m] Error message")).shouldBeTrue();
             (canFind(data, "\033[1;35;45;24;29;21m  \033[0;256;266;24;29;21m [\033[1;35;266;24;29;21mcritical" ~
                            "\033[0;256;266;24;29;21m] Critical message")).shouldBeTrue();
+            (canFind(data, "\033[1;36;46;24;29;21m  \033[0;256;266;24;29;21m [\033[1;36;266;24;29;21mfatal" ~
+                           "\033[0;256;266;24;29;21m] Fatal message")).shouldBeTrue();
           }
         });
       });

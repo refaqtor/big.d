@@ -117,20 +117,23 @@ class ColorConsoleLogger: Logger
         switch(payload.logLevel)
         {
           default: 
-            setTextColor(Color.initial, Color.initial, writer);
-            break;
-          case LogLevel.info: 
             setTextColor(Color.lightBlue, Color.lightBlue, writer);
             break;
+          case LogLevel.info: 
+            setTextColor(Color.green, Color.green, writer);
+            break;
           case LogLevel.warning: 
-            setTextColor(Color.lightYellow, Color.lightYellow, writer);
+            setTextColor(Color.yellow, Color.yellow, writer);
             break;
           case LogLevel.error: 
             setTextColor(Color.lightRed, Color.lightRed, writer);
             break;
           case LogLevel.critical: 
             setTextColor(Color.lightMagenta, Color.lightMagenta, writer);
-            break;        
+            break;
+          case LogLevel.fatal: 
+            setTextColor(Color.lightCyan, Color.lightCyan, writer);
+            break;          
         }
 
         writer.put("  ");
@@ -140,20 +143,23 @@ class ColorConsoleLogger: Logger
         switch(payload.logLevel)
         {
           default: 
-            setTextColor(Color.initial, Color.initial, writer);
-            break;
-          case LogLevel.info: 
             setTextColor(Color.lightBlue, Color.initial, writer);
             break;
+          case LogLevel.info: 
+            setTextColor(Color.green, Color.initial, writer);
+            break;
           case LogLevel.warning: 
-            setTextColor(Color.lightYellow, Color.initial, writer);
+            setTextColor(Color.yellow, Color.initial, writer);
             break;
           case LogLevel.error: 
             setTextColor(Color.lightRed, Color.initial, writer);
             break;
           case LogLevel.critical: 
             setTextColor(Color.lightMagenta, Color.initial, writer);
-            break;        
+            break;
+          case LogLevel.fatal: 
+            setTextColor(Color.lightCyan, Color.initial, writer);
+            break;          
         }
         
         formattedWrite(writer, "%s", payload.logLevel);

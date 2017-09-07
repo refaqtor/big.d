@@ -55,6 +55,7 @@
       "dependencies":
       {
         "big-d:core": "*",
+        "big-d:config": "*",
         "vibe-d:core": "~>0.8.1-rc.3"
       }
     },
@@ -72,6 +73,7 @@
       "targetType" : "library",
       "dependencies":
       {
+      	"big-d:core": "*",
         "big-d:utils": "*",
         "vibe-d:core": "~>0.8.1-rc.3",
         "dyaml": "~>0.6.3"

@@ -6,8 +6,10 @@
 
 module big.applicationmain;
 
+import big.config.configservice: config;
 import big.core.application: app, Application;
 import big.log.logservice: bigLog, LogService;
+import big.log.logserviceinitmanager: LogServiceInitManager;
 import big.log.logservicetype: LogServiceType;
 import vibe.core.core: lowerPrivileges, runEventLoop;
 
@@ -19,8 +21,12 @@ else
 {
   static this()
   {
-    auto logService = new LogService();
-    app().register(logService, LogServiceType.BIG_D);
+    /// LogService for logging big.d messages
+    auto innerLogService = new LogService();
+    app().register(innerLogService, LogServiceType.BIG_D);
+    
+    /// Init LogServiceInitManager
+    auto logServiceInitManager = new LogServiceInitManager;
   }
 
   /// main function for run big.d framework
@@ -34,6 +40,9 @@ else
 
     try
     {
+      /// Load config files
+      config().load("./config");
+      
       bigLog().trace("Run vibe.d event loop");
       exitStatus = runEventLoop();
     }
@@ -42,7 +51,7 @@ else
       bigLog().critical("Vibe.d event loop exception: " ~ e.msg);
     }
 
-    bigLog().critical("Stop big.d application");
+    bigLog().info("Stop big.d application");
     return exitStatus;
   }
 }

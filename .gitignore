@@ -20,3 +20,6 @@ Doveralls
 .project
 .idea/
 big.d.iml
+
+# git
+dub.userprefs
