@@ -4,7 +4,7 @@
 * Authors: LLC CERERIS
 */
 
-module big.router.routerservice;
+module big.router.router;
 
 import big.utils.composite;
 import big.log.logservice: bigLog, LogService;
@@ -23,7 +23,7 @@ struct Rout
   Middleware middleware;
 }
 
-class RouterService
+class Router
 {
   public:
     this()

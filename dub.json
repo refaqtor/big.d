@@ -91,6 +91,25 @@
 	    "targetType" : "library"
     },
     {
+      "name": "router",
+      "description": "Router system for big.d",
+      "copyright": "Copyright © 2017, LLC CERERIS",
+      "license": "MIT",
+      "homepage": "http://cereris.org",
+      "authors": [
+        "LLC CERERIS"
+      ],
+      "sourcePaths": ["router"],
+      "importPaths": ["router"],
+      "targetType" : "library",
+      "dependencies":
+      {
+        "big-d:utils": "*",
+        "big-d:core": "*",
+        "vibe-d:core": "~>0.8.1-rc.3"
+      }
+    },    
+    {
       "name": "test",
       "targetName": "bigd-test",
       "description": "Tests for big.d",
