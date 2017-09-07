@@ -17,7 +17,7 @@ import std.functional: toDelegate;
 * See_Also:
 *   `std.experimental.logger`
 */
-class LogService : MultiLogger
+final class LogService : MultiLogger
 {
   public:
     /** A constructor for the $(D LogService) MultiLogger.
@@ -69,9 +69,13 @@ static LogService bigLog()
   return app().get!LogService(LogServiceType.BIG_D);
 }
 
-/// Register default LogService
+/// Register default LogServices
 static this()
 {
   auto logService = new LogService();
   app().register(logService);
+  
+  /// LogService for logging big.d messages
+  auto innerLogService = new LogService();
+  app().register(innerLogService, LogServiceType.BIG_D);
 }

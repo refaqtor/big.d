@@ -168,6 +168,12 @@ class ColorConsoleLogger: Logger
         _out.flush();
       }
     }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "ColorConsoleLogger(level: '%s')".format(logLevel()); 
+    }
 
   private:
     /** Set color for console

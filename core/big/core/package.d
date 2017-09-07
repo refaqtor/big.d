@@ -7,3 +7,5 @@
 */
 
 module big.core;
+
+public import big.core.application;
