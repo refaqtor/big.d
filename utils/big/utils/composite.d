@@ -41,12 +41,6 @@ class Component
       _name = name;
     }
     
-    /// Convert Object to a human readable string
-    override string toString()
-    {
-      return "Component(name: '%s')".format(_name); 
-    }
-
     /// Return $(D true) if $(D Component) is $(D Composite) and $(D false) if $(D Attribute)
     abstract bool isComposite();
 
