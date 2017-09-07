@@ -72,7 +72,14 @@ final class Application
     */
     T get(T)()
     {
-      return _container.get!T();
+      try
+      {
+        return _container.get!T();
+      }
+      catch(Exception e)
+      {}
+      
+      return null;
     }
 
     /** Get service by type and name. 
@@ -86,7 +93,14 @@ final class Application
     */
     T get(T)(string name)
     {
-      return _container.get!T(name);
+      try
+      {
+        return _container.get!T(name);
+      }
+      catch(Exception e)
+      {}
+      
+      return null;
     }
 
   private:

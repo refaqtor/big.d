@@ -22,7 +22,7 @@ class CustomService
     }
     
     void init(Composite[] config)
-    {
+    {     
       foreach(Composite composite; config)
       {
         if(composite.get!Attribute("field1").getValue == "Some string")
@@ -68,27 +68,5 @@ unittest
               });
           });
       });
-  });
-  
-  scenario!("Registration of a service with a non-unique name", ["config"])
-  ({
-      given!"Config service and one registered service"
-      ({
-          auto configService = new ConfigService();
-          CustomService customService1 = new CustomService;
-          configService.subscribe("CustomService", toDelegate(&(customService1.init)));
-          CustomService customService2 = new CustomService;
-
-          when!"Try register second service with the same name as the first service"
-          ({
-
-              then!"Get exception"
-              ({
-                  CustomService customService2 = new CustomService;
-                  configService.subscribe("CustomService", toDelegate(&(customService2.init))).shouldThrowWithMessage(
-                    "All services must have unique names");
-              });
-          });
-      });
-  });  
+  }); 
 }
