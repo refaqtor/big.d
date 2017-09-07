@@ -40,6 +40,7 @@ else
 
     try
     {
+      /// TODO: get path from command line arguments
       /// Load config files
       config().load("./config");
       

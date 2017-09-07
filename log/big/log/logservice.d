@@ -10,8 +10,8 @@ import big.config.configservice: config;
 import big.core.application: app;
 import big.log.logservicetype: LogServiceType;
 import big.utils.composite: Composite;
-import std.functional: toDelegate;
 import std.experimental.logger : Logger, LogLevel, MultiLogger;
+import std.functional: toDelegate;
 
 /** This $(D MultiLogger) implementation allows you to get a logger by name
 * See_Also:
