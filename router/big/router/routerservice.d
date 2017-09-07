@@ -106,14 +106,7 @@ class RouterService
         }
         else
         {
-          try
-          {
-            result = (to!Attribute(sourceComponent)).getValue();
-          }
-          catch(Exception e)
-          {
-            bigLog.warning(e.msg);
-          }
+          result = data.get!Attribute("source").getValue();
           return result;
         }
       }
