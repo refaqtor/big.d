@@ -132,6 +132,21 @@ unittest
           config._handler([loggerData]);
           log().getLogger("3").shouldBeInstanceOf!ConsoleLogger();
           log().getLogger("3").logLevel().shouldEqual(LogLevel.all);
+          
+          loggerData.remove("level");
+          loggerData.remove("name");
+          loggerData.add(new Attribute("level", "cereris"));
+          loggerData.add(new Attribute("name", "4"));
+          config._handler([loggerData]);
+          log().getLogger("4").shouldBeInstanceOf!ConsoleLogger();
+          log().getLogger("4").logLevel().shouldEqual(LogLevel.off);
+          
+          loggerData.remove("level");
+          loggerData.remove("name");
+          loggerData.add(new Attribute("name", "5"));
+          loggerData.add(new Attribute("type", "cereris"));
+          config._handler([loggerData]);
+          log().getLogger("5").shouldBeNull();
         });
       });
     });

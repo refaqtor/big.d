@@ -67,6 +67,15 @@ unittest
                   customService.field3.shouldBeFalse();
               });
           });
+          
+          when!"Get default ConfigService"
+          ({
+              then!"Get the correct initialized service"
+              ({
+                  config().shouldNotBeNull();
+                  config().shouldBeInstanceOf!ConfigService();
+              });
+          });
       });
   }); 
 }
