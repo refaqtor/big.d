@@ -6,15 +6,18 @@
 
 module big.log.logserviceinitmanager;
 
-import big.config.configservice: config;
+import big.config.configservice: config, ConfigService;
 import big.core.application: app;
 import big.log.colorconsolelogger: ColorConsoleLogger;
 import big.log.consolelogger: ConsoleLogger;
-import big.log.logservice: bigLog, LogService;
 import big.log.logservicetype: LogServiceType;
+import big.log.logservice: bigLog, LogService;
+import big.log.tcplogger: TCPLogger;
+import big.log.udplogger: UDPLogger;
 import big.utils.composite: Attribute, Composite;
-import std.functional: toDelegate;
+import std.conv: to;
 import std.experimental.logger : Logger, LogLevel, MultiLogger;
+import std.functional: toDelegate;
 
 enum
 {
