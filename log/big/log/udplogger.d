@@ -59,6 +59,12 @@ class UDPLogger: Logger
       {
       }
     }
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "UDPLogger(host: %s, port: %d, level: '%s')".format(_address.toAddressString(), _address.port, logLevel()); 
+    }
 
   private:
     /// $(D NetworkAddress) of remote UDP server for logging
