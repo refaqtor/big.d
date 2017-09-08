@@ -11,6 +11,7 @@ import big.core.application: app, Application;
 import big.log.logservice: bigLog, LogService;
 import big.log.logserviceinitmanager: LogServiceInitManager;
 import big.log.logservicetype: LogServiceType;
+import big.provider.udp.udpserverserviceinitmanager: UDPServerServiceInitManager;
 import vibe.core.core: lowerPrivileges, runEventLoop;
 
 version (BigCustomMain)
@@ -23,6 +24,8 @@ else
   {  
     /// Init LogServiceInitManager
     auto logServiceInitManager = new LogServiceInitManager;
+    /// Init UDPServerServiceInitManager
+    auto udpServerServiceInitManager = new UDPServerServiceInitManager;
   }
 
   /// main function for run big.d framework

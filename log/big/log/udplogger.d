@@ -23,12 +23,6 @@ class UDPLogger: Logger
     *   host = The host address of the UDP server.
     *   port = The port of the UDP server.
     *   logLevel = The $(D LogLevel) for the $(D UDPLogger). By default - LogLevel.warning
-    * 
-    * Example:
-    * -------------
-    * auto logger1 = new UDPLogger("logFile");
-    * auto logger2 = new UDPLogger("logFile", LogLevel.fatal);
-    * -------------
     */
     this(in string host, in ushort port, in LogLevel logLevel = LogLevel.warning) @safe
     {

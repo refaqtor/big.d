@@ -59,7 +59,7 @@ unittest
           loggerData.add(new Attribute("group", "test"));
           config._handler([loggerData]);
           
-          auto logger = log("test").getLogger("ConsoleLogger");
+          auto logger = log("test").getFirstLogger("ConsoleLogger");
           logger.shouldBeInstanceOf!ConsoleLogger();
           logger.logLevel().shouldEqual(LogLevel.trace);
         });
@@ -72,7 +72,7 @@ unittest
           loggerData.add(new Attribute("level", "info"));
           config._handler([loggerData]);
           
-          auto logger = log().getLogger("ColorConsoleLogger");
+          auto logger = log().getFirstLogger("ColorConsoleLogger");
           logger.shouldBeInstanceOf!ColorConsoleLogger();
           logger.logLevel().shouldEqual(LogLevel.info);
         });
@@ -85,7 +85,7 @@ unittest
           loggerData.add(new Attribute("level", "warning"));
           config._handler([loggerData]);
           
-          auto logger = log().getLogger("UDPLogger");
+          auto logger = log().getFirstLogger("UDPLogger");
           logger.shouldBeInstanceOf!UDPLogger();
           logger.logLevel().shouldEqual(LogLevel.warning);
         });
@@ -98,7 +98,7 @@ unittest
           loggerData.add(new Attribute("level", "error"));
           config._handler([loggerData]);
           
-          auto logger = log().getLogger("TCPLogger");
+          auto logger = log().getFirstLogger("TCPLogger");
           logger.shouldBeInstanceOf!TCPLogger();
           logger.logLevel().shouldEqual(LogLevel.error);
         });	
@@ -107,46 +107,46 @@ unittest
         ({
           auto loggerData = new Composite("Logger");
           config._handler([loggerData]);
-          log().getLogger("").shouldBeNull();
+          log().getFirstLogger("").shouldBeNull();
           
           loggerData.remove("level");
           loggerData.remove("name");
           loggerData.add(new Attribute("level", "critical"));
           loggerData.add(new Attribute("name", "1"));
           config._handler([loggerData]);
-          log().getLogger("1").shouldBeInstanceOf!ConsoleLogger();
-          log().getLogger("1").logLevel().shouldEqual(LogLevel.critical);
+          log().getFirstLogger("1").shouldBeInstanceOf!ConsoleLogger();
+          log().getFirstLogger("1").logLevel().shouldEqual(LogLevel.critical);
           
           loggerData.remove("level");
           loggerData.remove("name");
           loggerData.add(new Attribute("level", "fatal"));
           loggerData.add(new Attribute("name", "2"));
           config._handler([loggerData]);
-          log().getLogger("2").shouldBeInstanceOf!ConsoleLogger();
-          log().getLogger("2").logLevel().shouldEqual(LogLevel.fatal);
+          log().getFirstLogger("2").shouldBeInstanceOf!ConsoleLogger();
+          log().getFirstLogger("2").logLevel().shouldEqual(LogLevel.fatal);
           
           loggerData.remove("level");
           loggerData.remove("name");
           loggerData.add(new Attribute("level", "all"));
           loggerData.add(new Attribute("name", "3"));
           config._handler([loggerData]);
-          log().getLogger("3").shouldBeInstanceOf!ConsoleLogger();
-          log().getLogger("3").logLevel().shouldEqual(LogLevel.all);
+          log().getFirstLogger("3").shouldBeInstanceOf!ConsoleLogger();
+          log().getFirstLogger("3").logLevel().shouldEqual(LogLevel.all);
           
           loggerData.remove("level");
           loggerData.remove("name");
           loggerData.add(new Attribute("level", "cereris"));
           loggerData.add(new Attribute("name", "4"));
           config._handler([loggerData]);
-          log().getLogger("4").shouldBeInstanceOf!ConsoleLogger();
-          log().getLogger("4").logLevel().shouldEqual(LogLevel.off);
+          log().getFirstLogger("4").shouldBeInstanceOf!ConsoleLogger();
+          log().getFirstLogger("4").logLevel().shouldEqual(LogLevel.off);
           
           loggerData.remove("level");
           loggerData.remove("name");
           loggerData.add(new Attribute("name", "5"));
           loggerData.add(new Attribute("type", "cereris"));
           config._handler([loggerData]);
-          log().getLogger("5").shouldBeNull();
+          log().getFirstLogger("5").shouldBeNull();
         });
       });
     });
