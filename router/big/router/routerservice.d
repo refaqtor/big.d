@@ -41,7 +41,7 @@ class RouterService
     
     }
     
-    void routing(Composite data)
+    void process(Composite data)
     {
       auto sourceAttribute = data.get!Attribute("source");
       string source;
@@ -132,7 +132,7 @@ class RouterService
       _targets ~= newTarget;
     }
     
-    void insertRout(Rout newRout)
+    void addRout(Rout newRout)
     {
       if(canFind(_routs, newRout))
       {
@@ -144,6 +144,11 @@ class RouterService
       {
         _routs ~= newRout;
       }
+    }
+    
+    Rout[] getRouts()
+    {
+      return _routs;
     }
     
   private:

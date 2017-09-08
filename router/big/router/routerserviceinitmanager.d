@@ -90,7 +90,7 @@ final class RouterServiceInitManager
         newRout.target = target;
         newRout.middleware = middleware;
         
-        routerService.insertRout(newRout);
+        routerService.addRout(newRout);
       }
     }    
 }
