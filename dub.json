@@ -109,8 +109,7 @@
       {
         "big-d:utils": "*",
         "big-d:core": "*",
-        "big-d:log": "*",
-        "vibe-d:core": "~>0.8.1-rc.3"
+        "big-d:log": "*"
       }
     },    
     {
