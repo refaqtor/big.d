@@ -6,7 +6,7 @@
 
 module test.big.log.logserviceinitmanager;
 
-import big.config.configservice: ConfigService;
+import big.config.configservice: ConfigService, InitPriority;
 import big.core.application: app;
 import big.log.colorconsolelogger: ColorConsoleLogger;
 import big.log.consolelogger: ConsoleLogger;
@@ -22,14 +22,16 @@ import std.experimental.logger: LogLevel;
 class ConfigServiceMock: ConfigService
 {
   public:
-    override void subscribe(string name, ConfigHandler handler)
+    override void subscribe(string name, ConfigHandler handler, InitPriority priority)
     { 
       _handler = handler;
       _name = name;
+      _priority = priority;
     }
     
     ConfigHandler _handler;
     string _name;
+    InitPriority _priority;
 }
 
 unittest
@@ -48,6 +50,7 @@ unittest
         ({
           config._name.shouldEqual("Logger");
           config._handler.shouldNotBeNull();
+          config._priority.shouldEqual(InitPriority.HIGH);
         });
         
         then!"LogServiceInitManager init ConsoleLogger"

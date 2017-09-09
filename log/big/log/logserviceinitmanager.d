@@ -6,7 +6,7 @@
 
 module big.log.logserviceinitmanager;
 
-import big.config.configservice: config, ConfigService;
+import big.config.configservice: config, ConfigService, InitPriority;
 import big.core.application: app;
 import big.log.colorconsolelogger: ColorConsoleLogger;
 import big.log.consolelogger: ConsoleLogger;
@@ -56,7 +56,7 @@ final class LogServiceInitManager
     /// A constructor for the $(D LogServiceInitManager)
     this(ConfigService service = config())
     {
-      service.subscribe(LOG_SERVICE_CONFIG_TYPE, toDelegate(&initLogService));
+      service.subscribe(LOG_SERVICE_CONFIG_TYPE, toDelegate(&initLogService), InitPriority.HIGH);
     }
     
   private:
@@ -116,7 +116,7 @@ final class LogServiceInitManager
         /// Create LogService for group if needed      
         if(app().get!LogService(group) is null)
         {
-          bigLog().trace("LogServiceInitManager: create LogService `" ~ group ~ "'");
+          bigLog().info("LogServiceInitManager: create LogService `" ~ group ~ "'");
           auto logService = new LogService();
           app().register(logService, group);
         }
@@ -161,7 +161,7 @@ final class LogServiceInitManager
         if(logger)
         {          
           app().get!LogService(group).insertLogger(name, logger);
-          bigLog().trace("LogServiceInitManager: create " ~ to!string(logger));
+          bigLog().info("LogServiceInitManager: create " ~ to!string(logger));
         }
       }
     }    

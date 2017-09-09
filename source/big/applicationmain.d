@@ -1,4 +1,4 @@
-/**
+  /**
 * Copyright: 2017 © LLC CERERIS
 * License: MIT
 * Authors: LLC CERERIS
@@ -11,6 +11,7 @@ import big.core.application: app, Application;
 import big.log.logservice: bigLog, LogService;
 import big.log.logserviceinitmanager: LogServiceInitManager;
 import big.log.logservicetype: LogServiceType;
+import big.provider.aqmp.aqmpclientserviceinitmanager: AQMPClientServiceInitManager;
 import big.provider.udp.udpserverserviceinitmanager: UDPServerServiceInitManager;
 import vibe.core.core: lowerPrivileges, runEventLoop;
 
@@ -26,6 +27,8 @@ else
     auto logServiceInitManager = new LogServiceInitManager;
     /// Init UDPServerServiceInitManager
     auto udpServerServiceInitManager = new UDPServerServiceInitManager;
+    /// Init AQMPClientInitManager
+    auto aqmpClientServiceInitManager = new AQMPClientServiceInitManager;
   }
 
   /// main function for run big.d framework
