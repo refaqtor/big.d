@@ -51,9 +51,6 @@ struct Route
 final class RouterService
 {
   public:
-    /// A constructor for the $(D RouterService)
-    this(){}
-    
     /** Main function of router service which coordinates
     * data and targets by using routes and middlewares
     */
@@ -93,7 +90,7 @@ final class RouterService
         
         if(sourceMatchFirstValue.length == 0 || typeMatchFirstValue.length == 0)
         {
-          return;
+          continue;
         }
         
         string middlewareRegex = route.middleware;

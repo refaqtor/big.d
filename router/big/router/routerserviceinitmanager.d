@@ -10,6 +10,7 @@ import big.config.configservice: config, ConfigService;
 import big.log.logservice: bigLog;
 import big.router.routerservice: Route, routerService;
 import big.utils.composite;
+import std.conv;
 import std.functional: toDelegate;
 
 enum
@@ -95,6 +96,7 @@ final class RouterServiceInitManager
         newRoute.middleware = middleware;
         
         routerService.addRoute(newRoute);
+        bigLog.info("Route '" ~ to!string(newRoute) ~ "' was added to router service");
       }
     }    
 }
