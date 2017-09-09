@@ -71,11 +71,11 @@ final class LogServiceInitManager
         auto groupAttribute = loggerConfig.get!Attribute(LOG_SERVICE_GROUP);
         string group =  groupAttribute is null ? DEFAULT_LOG_SERVICE_GROUP : groupAttribute.getValue().get!string();
         bigLog().trace("LogServiceInitManager: parse config group `" ~ group ~ "'");
-        
+
         auto nameAttribute = loggerConfig.get!Attribute(LOG_SERVICE_NAME);
         string name =  nameAttribute is null ? DEFAULT_LOG_SERVICE_NAME : nameAttribute.getValue().get!string();
         bigLog().trace("LogServiceInitManager: parse config name `" ~ name ~ "'");
-        
+
         auto typeAttribute = loggerConfig.get!Attribute(LOG_SERVICE_TYPE);
         immutable string type =  typeAttribute is null ? DEFAULT_LOG_SERVICE_TYPE : typeAttribute.getValue().get!string();
         bigLog().trace("LogServiceInitManager: parse config type `" ~ type ~ "'");
@@ -126,7 +126,7 @@ final class LogServiceInitManager
         switch(type)
         {
           default:
-            bigLog().warning("LogServiceInitManager: can't create logger of type `" ~ type ~ "'"); 
+            bigLog().warning("LogServiceInitManager: can't create logger of type `" ~ type ~ "'");
             break;
           case "color":
             logger = new ColorConsoleLogger(logLevel);
@@ -138,28 +138,28 @@ final class LogServiceInitManager
             auto hostAttribute = loggerConfig.get!Attribute(LOG_SERVICE_HOST);
             immutable string host =  hostAttribute is null ? DEFAULT_LOG_SERVICE_HOST : hostAttribute.getValue().get!string();
             bigLog().trace("LogServiceInitManager: parse config host `" ~ host ~ "'");
-            
+
             auto portAttribute = loggerConfig.get!Attribute(LOG_SERVICE_PORT);
             immutable ushort port =  portAttribute is null ? to!ushort(DEFAULT_LOG_SERVICE_PORT) : portAttribute.getValue().get!ushort();
             bigLog().trace("LogServiceInitManager: parse config port `" ~ to!string(port) ~ "'");
-            
+
             logger = new UDPLogger(host, port, logLevel);
             break;
           case "tcp":
             auto hostAttribute = loggerConfig.get!Attribute(LOG_SERVICE_HOST);
             immutable string host =  hostAttribute is null ? DEFAULT_LOG_SERVICE_HOST : hostAttribute.getValue().get!string();
             bigLog().trace("LogServiceInitManager: parse config host `" ~ host ~ "'");
-            
+
             auto portAttribute = loggerConfig.get!Attribute(LOG_SERVICE_PORT);
             immutable ushort port =  portAttribute is null ? to!ushort(DEFAULT_LOG_SERVICE_PORT) : portAttribute.getValue().get!ushort();
             bigLog().trace("LogServiceInitManager: parse config port `" ~ to!string(port) ~ "'");
-            
+
             logger = new TCPLogger(host, port, logLevel);
-            break; 
+            break;
         }
         
         if(logger)
-        {          
+        {
           app().get!LogService(group).insertLogger(name, logger);
           bigLog().trace("LogServiceInitManager: create " ~ to!string(logger));
         }

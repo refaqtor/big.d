@@ -52,7 +52,7 @@ unittest
           app().get!TestService("test1").shouldBeInstanceOf!TestService();
         });
       });
-      
+
       when!"Get non exist service"
       ({
         then!"Return null"

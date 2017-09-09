@@ -18,6 +18,7 @@
     "big-d:log": "*",
     "big-d:provider": "*",
     "big-d:utils": "*",
+    "big-d:router": "*",
     "dich": "~>0.0.2"
   },
   "-ddoxFilterArgs": ["--ex", "vibe", "--ex", "dich", "--ex", "dyaml", "--ex", "tinyendian", "--ex", "yaml"],
@@ -112,6 +113,25 @@
       "importPaths": ["utils"],
 	    "targetType" : "library"
     },
+    {
+      "name": "router",
+      "description": "Router system for big.d",
+      "copyright": "Copyright © 2017, LLC CERERIS",
+      "license": "MIT",
+      "homepage": "http://cereris.org",
+      "authors": [
+        "LLC CERERIS"
+      ],
+      "sourcePaths": ["router"],
+      "importPaths": ["router"],
+      "targetType" : "library",
+      "dependencies":
+      {
+        "big-d:utils": "*",
+        "big-d:core": "*",
+        "big-d:log": "*"
+      }
+    },    
     {
       "name": "test",
       "targetName": "bigd-test",
