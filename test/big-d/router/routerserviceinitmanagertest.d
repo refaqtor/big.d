@@ -7,8 +7,8 @@
 module test.big.router.routerserviceinitmanagertest;
 
 import big.config.configservice: ConfigService;
-import big.router.routerserviceinitmanager;
 import big.router.routerservice;
+import big.router.routerserviceinitmanager;
 import checkit;
 
 unittest
@@ -28,12 +28,12 @@ unittest
             config.load("test/big-d/router/testConfigDirectory1");          
             auto router = routerService();
             
-            Rout[] expected = [];
-            expected ~= Rout("sorceRegex", "typeRegex", "targetRegex", "middlewareRegex");
-            expected ~= Rout("sorceRegex2", "typeRegex", "targetRegex", "middlewareRegex");
-            expected ~= Rout("sorceRegex", "typeRegex", "targetRegex");
+            Route[] expected = [];
+            expected ~= Route("sorceRegex", "typeRegex", "targetRegex", "middlewareRegex");
+            expected ~= Route("sorceRegex2", "typeRegex", "targetRegex", "middlewareRegex");
+            expected ~= Route("sorceRegex", "typeRegex", "targetRegex");
             
-            router.getRouts.shouldEqual(expected);
+            router.getRoutes.shouldEqual(expected);
         });
       });
     });

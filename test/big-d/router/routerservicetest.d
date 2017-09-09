@@ -13,27 +13,18 @@ import big.utils.composite;
 import std.functional;
 import checkit;
 
-//// If you want use custom middleware for router service,
-//// you should create and register it in router service.
-//
-//// Examples of custom middlewares...
-//void customMiddlewareHandler(ref Composite)
-//{
-//
-//}
-
 unittest
 {
-  scenario!("RouterService should rout data correctly", ["router"])
+  scenario!("RouterService should route data correctly", ["router"])
   ({
     given!"Configured router service"
     ({       
       RouterService router = new RouterService();
       
-      Rout rout = Rout(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
-      Rout copyRout = Rout(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
-      router.addRout(rout);
-      router.addRout(copyRout);
+      Route route = Route(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
+      Route copyRoute = Route(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
+      router.addRoute(route);
+      router.addRoute(copyRoute);
       
       int expectedCount = 0; //shows how many times the function was called
       void customTarget(Composite composite)
@@ -43,9 +34,9 @@ unittest
       
       router.addTarget("customTarget", toDelegate(&(customTarget)));
       
-      Rout[] expected = [];
-      expected ~= Rout(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
-      router.getRouts.shouldEqual(expected);
+      Route[] expected = [];
+      expected ~= Route(r"\bsource\d*\b", r"\btype\d*\b", r"\bcustomTarget\b");
+      router.getRoutes.shouldEqual(expected);
       
       when!"Some data is created and routed"
       ({
@@ -92,14 +83,14 @@ unittest
     });
   });
   
-  scenario!("RouterService should rout data correctly", ["router"])
+  scenario!("RouterService should route data correctly", ["router"])
   ({
     given!"Configured router service with route which have middleware"
     ({       
       RouterService router = new RouterService();
       
-      Rout rout = Rout(r"\bsource\d*\b", r"\bDATA\b|\bPOST\b", r"\bcustomTarget\b", r"\bmiddleware\d*\b");
-      router.addRout(rout);
+      Route route = Route(r"\bsource\d*\b", r"\bDATA\b|\bPOST\b", r"\bcustomTarget\b", r"\bmiddleware\d*\b");
+      router.addRoute(route);
       
       int expectedCount = 0; //shows how many times the function was called
       void customTarget(Composite composite)
@@ -108,9 +99,9 @@ unittest
       }
       router.addTarget("customTarget", toDelegate(&(customTarget)));
       
-      Rout[] expected = [];
-      expected ~= Rout(r"\bsource\d*\b", r"\bDATA\b|\bPOST\b", r"\bcustomTarget\b", r"\bmiddleware\d*\b");
-      router.getRouts.shouldEqual(expected);
+      Route[] expected = [];
+      expected ~= Route(r"\bsource\d*\b", r"\bDATA\b|\bPOST\b", r"\bcustomTarget\b", r"\bmiddleware\d*\b");
+      router.getRoutes.shouldEqual(expected);
       
       void customMiddleware1(ref Composite composite)
       {

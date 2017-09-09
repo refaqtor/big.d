@@ -7,19 +7,23 @@
 module big.router.routerserviceinitmanager;
 
 import big.config.configservice: config, ConfigService;
-import std.functional: toDelegate;
-import big.utils.composite;
-import big.router.routerservice: routerService, Rout;
 import big.log.logservice: bigLog;
+import big.router.routerservice: Route, routerService;
+import big.utils.composite;
+import std.functional: toDelegate;
 
 enum
 {
   /// String name for load from config file
-  ROUT_CONFIG_TYPE = "Rout",
-  ROUT_SOURCE = "source",
-  ROUT_TYPE = "type",
-  ROUT_TARGET = "target",
-  ROUT_MIDDLEWARE = "middleware"
+  ROUTE_CONFIG_TYPE = "Rout",
+  /// String name of source defenition
+  ROUTE_SOURCE = "source",
+  /// String name of type defenition
+  ROUTE_TYPE = "type",
+  /// String name of target defenition
+  ROUTE_TARGET = "target",
+  /// String name of middleware defenition
+  ROUTE_MIDDLEWARE = "middleware"
 }
 
 /// Provide init router system
@@ -29,7 +33,7 @@ final class RouterServiceInitManager
     /// A constructor for the $(D RouterServiceInitManager)
     this(ConfigService service = config())
     {
-      service.subscribe(ROUT_CONFIG_TYPE, toDelegate(&init));
+      service.subscribe(ROUTE_CONFIG_TYPE, toDelegate(&initRouterService));
     }
     
   private:
@@ -37,15 +41,15 @@ final class RouterServiceInitManager
     * Params:
     *		configs = All configuration data for RouterServise
     */
-    void init(Composite[] configs)
+    void initRouterService(Composite[] configs)
     {      
       foreach(Composite routerConfig; configs)
       {
-        auto sourceAttribute = routerConfig.get!Attribute(ROUT_SOURCE);
+        auto sourceAttribute = routerConfig.get!Attribute(ROUTE_SOURCE);
         string source;
         if(sourceAttribute is null)
         {
-          bigLog.warning("Rout without 'source' will be ignored! Check your config!");
+          bigLog.warning("Route without 'source' will be ignored! Check your config!");
           continue;
         }
         else
@@ -53,11 +57,11 @@ final class RouterServiceInitManager
           source = sourceAttribute.getValue().get!string();
         }
         
-        auto typeAttribute = routerConfig.get!Attribute(ROUT_TYPE);
+        auto typeAttribute = routerConfig.get!Attribute(ROUTE_TYPE);
         string type;
         if(typeAttribute is null)
         {
-          bigLog.warning("Rout without 'type' will be ignored! Check your config!");
+          bigLog.warning("Route without 'type' will be ignored! Check your config!");
           continue;
         }
         else
@@ -65,11 +69,11 @@ final class RouterServiceInitManager
           type = typeAttribute.getValue().get!string();
         }
         
-        auto targetAttribute = routerConfig.get!Attribute(ROUT_TARGET);
+        auto targetAttribute = routerConfig.get!Attribute(ROUTE_TARGET);
         string target;
         if(targetAttribute is null)
         {
-          bigLog.warning("Rout without 'target' will be ignored! Check your config!");
+          bigLog.warning("Route without 'target' will be ignored! Check your config!");
           continue;
         }
         else
@@ -77,20 +81,20 @@ final class RouterServiceInitManager
           target = targetAttribute.getValue().get!string();
         }
         
-        auto middlewareAttribute = routerConfig.get!Attribute(ROUT_MIDDLEWARE);
+        auto middlewareAttribute = routerConfig.get!Attribute(ROUTE_MIDDLEWARE);
         string middleware = null;
         if(!(middlewareAttribute is null))
         {
           middleware = middlewareAttribute.getValue().get!string();
         }
         
-        Rout newRout;
-        newRout.source = source;
-        newRout.type = type;
-        newRout.target = target;
-        newRout.middleware = middleware;
+        Route newRoute;
+        newRoute.source = source;
+        newRoute.type = type;
+        newRoute.target = target;
+        newRoute.middleware = middleware;
         
-        routerService.addRout(newRout);
+        routerService.addRoute(newRoute);
       }
     }    
 }

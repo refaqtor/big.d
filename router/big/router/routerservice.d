@@ -6,41 +6,57 @@
 
 module big.router.routerservice;
 
-import big.utils.composite;
-import big.log.logservice: bigLog, LogService;
-import std.conv;
-import std.algorithm: canFind;
 import big.core.application: app;
+import big.log.logservice: bigLog, LogService;
+import big.utils.composite;
+import std.algorithm: canFind;
+import std.conv;
 import std.regex: matchFirst;
 
+///Pair from the name and middleware handler of data
 struct Middleware
 {
+  ///Middleware name
   string middlewareName;
+  ///Middleware handler
   void delegate(ref Composite) middlewareHandler;
 }
 
+///Pair from the name and target handler of data
 struct Target
 {
+  ///Target name
   string targetName;
+  ///Target handler
   void delegate(Composite) targetHandler;
 }
 
-struct Rout
+///The structure of the route whose array is used for data routing
+struct Route
 {
+  ///Source name (regex)
   string source;
+  ///Type of request (regex)
   string type;
+  ///Target name (regex)
   string target;
+  ///Middleware name (regex)
   string middleware;
 }
 
-class RouterService
+/** This service allows you to routing data by using $(D Route) structures.
+* You should add targets and middlewares if you want working route service
+* correctly.
+*/
+final class RouterService
 {
   public:
-    this()
-    {
+    /// A constructor for the $(D RouterService)
+    this(){}
     
-    }
-    
+    /** Main function of router service which coordinates
+    * data and targets by using routes and middlewares
+    */
     void process(Composite data)
     {
       auto sourceAttribute = data.get!Attribute("source");
@@ -67,26 +83,26 @@ class RouterService
         type = typeAttribute.getValue().get!string();
       }
       
-      foreach(Rout rout; _routs)
+      foreach(Route route; _routes)
       {
-        string sourceRegex = rout.source;
-        auto sourceMatchFirstValue = matchFirst(source, sourceRegex);
+        string sourceRegex = route.source;
+        const auto sourceMatchFirstValue = matchFirst(source, sourceRegex);
         
-        string typeRegex = rout.type;
-        auto typeMatchFirstValue = matchFirst(type, typeRegex);
+        string typeRegex = route.type;
+        const auto typeMatchFirstValue = matchFirst(type, typeRegex);
         
         if(sourceMatchFirstValue.length == 0 || typeMatchFirstValue.length == 0)
         {
           return;
         }
         
-        string middlewareRegex = rout.middleware;
+        string middlewareRegex = route.middleware;
         Composite middlewareComposite = data;
         if(!(middlewareRegex is null))
         {
           foreach(Middleware middleware; _middlewares)
           {
-            auto middlewareMatchFirstValue = matchFirst(middleware.middlewareName, middlewareRegex);
+            const auto middlewareMatchFirstValue = matchFirst(middleware.middlewareName, middlewareRegex);
             if(middlewareMatchFirstValue.length != 0)
             {
               bigLog.trace("Sending data '" ~ middlewareComposite.toString ~ "' to middleware with name '" ~
@@ -104,10 +120,10 @@ class RouterService
           bigLog.trace("All middleware checks were successful!");
         }
         
-        string targetRegex = rout.target;
+        string targetRegex = route.target;
         foreach(Target target; _targets)
         {
-          auto targetMatchFirstValue = matchFirst(target.targetName, targetRegex);
+          const auto targetMatchFirstValue = matchFirst(target.targetName, targetRegex);
           if(targetMatchFirstValue.length != 0)
           {
             target.targetHandler(middlewareComposite);
@@ -115,7 +131,8 @@ class RouterService
         }
       }
     }
-
+    
+    ///You can add middleware by using this function
     void addMiddleware(string middlewareName, void delegate(ref Composite) middlewareHandler)
     {
       Middleware newMiddleware;
@@ -124,6 +141,7 @@ class RouterService
       _middlewares ~= newMiddleware;
     }
    
+    ///You can add target by using this function
     void addTarget(string targetName, void delegate(Composite) targetHandler)
     {
       Target newTarget;
@@ -132,27 +150,29 @@ class RouterService
       _targets ~= newTarget;
     }
     
-    void addRout(Rout newRout)
+    ///You can add route by using this function
+    void addRoute(Route newRoute)
     {
-      if(canFind(_routs, newRout))
+      if(canFind(_routes, newRoute))
       {
         bigLog.warning("Attempt to insert a router with equivalent parameters was detected!." ~
           "Please, check your configuration files or code were you insert the routers. " ~
-          "Routs duplicates will be ignored!");
+          "Routes duplicates will be ignored!");
       }
       else
       {
-        _routs ~= newRout;
+        _routes ~= newRoute;
       }
     }
     
-    Rout[] getRouts()
+    ///You can get routes by using this function
+    Route[] getRoutes()
     {
-      return _routs;
+      return _routes;
     }
     
   private:
-    Rout[] _routs;
+    Route[] _routes;
     Target[] _targets;
     Middleware[] _middlewares;
 }
