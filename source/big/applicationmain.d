@@ -10,8 +10,9 @@ import big.config.configservice: config;
 import big.core.application: app, Application;
 import big.log.logservice: bigLog, LogService;
 import big.log.logserviceinitmanager: LogServiceInitManager;
-import big.router.routerserviceinitmanager: RouterServiceInitManager;
 import big.log.logservicetype: LogServiceType;
+import big.provider.udp.udpserverserviceinitmanager: UDPServerServiceInitManager;
+import big.router.routerserviceinitmanager: RouterServiceInitManager;
 import vibe.core.core: lowerPrivileges, runEventLoop;
 
 version (BigCustomMain)
@@ -26,6 +27,8 @@ else
     auto logServiceInitManager = new LogServiceInitManager;
     /// Init RouterServiceInitManager
     auto routerServiceInitManager = new RouterServiceInitManager;
+    /// Init UDPServerServiceInitManager
+    auto udpServerServiceInitManager = new UDPServerServiceInitManager;
   }
 
   /// main function for run big.d framework

@@ -29,8 +29,8 @@ unittest
 
         then!"Loggers succes get by name"
         ({
-          logService.getLogger("FirstLogger").shouldBeInstanceOf!NullLogger();
-          logService.getLogger("SecondLogger").shouldBeInstanceOf!NullLogger();
+          logService.getFirstLogger("FirstLogger").shouldBeInstanceOf!NullLogger();
+          logService.getFirstLogger("SecondLogger").shouldBeInstanceOf!NullLogger();
         });
       });
     });
@@ -46,7 +46,7 @@ unittest
       ({
         then!"Get null value"
         ({
-          logService.getLogger("nonexistent_logger").shouldBeNull();
+          logService.getFirstLogger("nonexistent_logger").shouldBeNull();
         });
       });
     });

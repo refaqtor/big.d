@@ -31,9 +31,9 @@ jobs:
       d: dmd-beta
       script: 
         - dub fetch dscanner
-        - dub run dscanner -- --styleCheck log core utils config 2>&1 || echo "Style check!"
-        - dub run dscanner -- --syntaxCheck log core utils config 2>&1 || echo "Syntax check!"
-        - dub run dscanner -- --sloc log core utils config
+        - dub run dscanner -- --styleCheck log core utils config provider source 2>&1 || echo "Style check!"
+        - dub run dscanner -- --syntaxCheck log core utils config provider source 2>&1 || echo "Syntax check!"
+        - dub run dscanner -- --sloc log core utils config provider source
     - stage: coverage
       d: dmd-beta
       script: 

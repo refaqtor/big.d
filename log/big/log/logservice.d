@@ -36,11 +36,11 @@ final class LogService : MultiLogger
     *   a $(D Logger) with the given name will be given.
     * Returns: $(D Logger) with the given name.
     */
-    Logger getLogger(in char[] name) @safe
+    Logger getFirstLogger(in char[] name) @safe
     {
-      for (size_t i = 0; i < this.logger.length; ++i)
+      for(size_t i = 0; i < this.logger.length; ++i)
       {
-        if (this.logger[i].name == name)
+        if(this.logger[i].name == name)
         {
           Logger ret = this.logger[i].logger;
           return ret;

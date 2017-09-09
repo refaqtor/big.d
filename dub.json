@@ -1,21 +1,22 @@
 {
-	"name": "big-d",
-	"description": "MVC Web framework for D",
-	"copyright": "Copyright © 2017, LLC CERERIS",
-	"license": "MIT",
-	"homepage": "http://cereris.org",
-	"authors": [
-		"LLC CERERIS"
-	],
-	"sourcePaths": ["source"],
+  "name": "big-d",
+  "description": "MVC Web framework for D",
+  "copyright": "Copyright © 2017, LLC CERERIS",
+  "license": "MIT",
+  "homepage": "http://cereris.org",
+  "authors": [
+    "LLC CERERIS"
+  ],
+  "sourcePaths": ["source"],
   "importPaths": ["source"],
-	"targetName": "bigd",
-	"targetType" : "library",
+  "targetName": "bigd",
+  "targetType" : "library",
   "dependencies":
   {
+  	"big-d:config": "*",
     "big-d:core": "*",
     "big-d:log": "*",
-    "big-d:config": "*",
+    "big-d:provider": "*",
     "big-d:utils": "*",
     "big-d:router": "*",
     "dich": "~>0.0.2"
@@ -61,6 +62,26 @@
       }
     },
     {
+      "name": "provider",
+      "description": "Provide basic communication interface for big.d",
+	    "copyright": "Copyright © 2017, LLC CERERIS",
+	    "license": "MIT",
+	    "homepage": "http://cereris.org",
+	    "authors": [
+		    "LLC CERERIS"
+	    ],
+	  "sourcePaths": ["provider"],
+      "importPaths": ["provider"],
+	  "targetType" : "library",
+      "dependencies":
+      {
+        "big-d:core": "*",
+        "big-d:config": "*",
+        "big-d:log": "*",
+        "vibe-d:core": "~>0.8.1-rc.3"
+      }
+    },
+    {
       "name": "config",
       "description": "Config system for big.d",
       "copyright": "Copyright © 2017, LLC CERERIS",
@@ -76,7 +97,6 @@
       {
       	"big-d:core": "*",
         "big-d:utils": "*",
-        "vibe-d:core": "~>0.8.1-rc.3",
         "dyaml": "~>0.6.3"
       }
     },
