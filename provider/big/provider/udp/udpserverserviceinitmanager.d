@@ -40,7 +40,7 @@ enum: ushort
 final class UDPServerServiceInitManager
 {
   public:
-    /// A constructor for the $(D LogServiceInitManager)
+    /// A constructor for the $(D UDPServerServiceInitManager)
     this(ConfigService service = config())
     {
       service.subscribe(UDP_SERVER_SERVICE_CONFIG_TYPE, toDelegate(&initUDPServerService));
@@ -67,17 +67,17 @@ final class UDPServerServiceInitManager
         
         auto hostAttribute = udpServerConfig.get!Attribute(UDP_SERVER_SERVICE_HOST);
         immutable string host =  hostAttribute is null ? DEFAULT_UDP_SERVER_SERVICE_HOST : hostAttribute.getValue().get!string();
-        bigLog().trace("LogServiceInitManager: parse config host `" ~ host ~ "'");
+        bigLog().trace("UDPServerServiceInitManager: parse config host `" ~ host ~ "'");
         
         auto portAttribute = udpServerConfig.get!Attribute(UDP_SERVER_SERVICE_PORT);
         immutable ushort port =  portAttribute is null ? DEFAULT_UDP_SERVER_SERVICE_PORT : to!ushort(portAttribute.getValue().get!int());
-        bigLog().trace("LogServiceInitManager: parse config port `" ~ to!string(port) ~ "'");
+        bigLog().trace("UDPServerServiceInitManager: parse config port `" ~ to!string(port) ~ "'");
            
         auto server = new UDPServer(host, port, toDelegate(&_handle));
         server.start();
         
         app().get!UDPServerService().insertUDPServer(url, server);
-        bigLog().trace("UDPServerServiceInitManager: create " ~ to!string(server));
+        bigLog().info("UDPServerServiceInitManager: create " ~ to!string(server));
       }
     }    
     

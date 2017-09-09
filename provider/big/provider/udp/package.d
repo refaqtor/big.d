@@ -4,6 +4,8 @@
 * Authors: LLC CERERIS
 * See_Also: 
 *   `big.provider.udp.udpserver`
+*   `big.provider.udp.udpserverservice`
+*   `big.provider.udp.udpserverserviceinitmanager`
 */
 
 module big.provider.udp;

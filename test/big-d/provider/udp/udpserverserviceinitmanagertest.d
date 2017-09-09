@@ -6,7 +6,7 @@
 
 module test.provider.udp.udpserverserviceinitmanager;
 
-import big.config.configservice: ConfigService;
+import big.config.configservice: ConfigService, InitPriority;
 import big.core.application: app;
 import big.provider.udp;
 import big.utils.composite: Attribute, Component, Composite;
@@ -16,14 +16,16 @@ import checkit.bdd;
 class ConfigServiceMock: ConfigService
 {
   public:
-    override void subscribe(string name, ConfigHandler handler)
+    override void subscribe(string name, ConfigHandler handler, InitPriority priority)
     { 
       _handler = handler;
       _name = name;
+      _priority = priority;
     }
     
     ConfigHandler _handler;
     string _name;
+    InitPriority _priority;
 }
 
 unittest
@@ -42,6 +44,7 @@ unittest
         ({
           config._name.shouldEqual("UDP");
           config._handler.shouldNotBeNull();
+          config._priority.shouldEqual(InitPriority.NORMAL);
         });
         
         then!"UDPServerServiceInitManager init UDPServer"

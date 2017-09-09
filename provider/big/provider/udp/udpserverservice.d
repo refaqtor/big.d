@@ -9,6 +9,7 @@ module big.provider.udp.udpserverservice;
 import big.core.application: app;
 import big.provider.udp.udpserver: UDPServer;
 
+/// For store UDPServer instance
 struct UDPServerEntry
 {
   /// The name of the $(D UDPServer)
@@ -21,11 +22,7 @@ struct UDPServerEntry
 class UDPServerService
 {
   public:
-    /// A constructor for the $(D UDPServerService).
-    this()
-    {
-    }
-    
+     
     void insertUDPServer(in string name, UDPServer server)
     {
       _servers ~= UDPServerEntry(name, server);
