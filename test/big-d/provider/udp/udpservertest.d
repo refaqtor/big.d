@@ -23,13 +23,13 @@ unittest
       ubyte[] data;
       NetworkAddress address;
       
-      void handle(ubyte[] data_, NetworkAddress address_)
+      void handle(ubyte[] data_, NetworkAddress address_, string url)
       {
         data = data_;
         address = address_;
       }
         
-      auto server = new UDPServer("127.0.0.1", 29000, toDelegate(&handle));
+      auto server = new UDPServer("127.0.0.1", 29000, "server1", toDelegate(&handle));
       server.start();
 
       when!"Send data"

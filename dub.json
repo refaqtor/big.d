@@ -78,6 +78,7 @@
         "big-d:core": "*",
         "big-d:config": "*",
         "big-d:log": "*",
+        "big-d:router": "*",
         "vibe-d:core": "~>0.8.1-rc.3"
       }
     },

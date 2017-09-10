@@ -11,6 +11,7 @@ import big.core.application: app;
 import big.log.logservice: bigLog;
 import big.provider.udp.udpserver: UDPServer;
 import big.provider.udp.udpserverservice: UDPServerService;
+import big.router.routerservice: routerService;
 import big.utils.composite: Attribute, Composite;
 import std.conv: to;
 import std.functional: toDelegate;
@@ -73,7 +74,7 @@ final class UDPServerServiceInitManager
         immutable ushort port =  portAttribute is null ? DEFAULT_UDP_SERVER_SERVICE_PORT : to!ushort(portAttribute.getValue().get!int());
         bigLog().trace("UDPServerServiceInitManager: parse config port `" ~ to!string(port) ~ "'");
            
-        auto server = new UDPServer(host, port, toDelegate(&_handle));
+        auto server = new UDPServer(host, port, url, toDelegate(&_handle));
         server.start();
         
         app().get!UDPServerService().insertUDPServer(url, server);
@@ -82,8 +83,16 @@ final class UDPServerServiceInitManager
     }    
     
   private:
-    void _handle(ubyte[] data, NetworkAddress address)
+    void _handle(ubyte[] data, NetworkAddress address, string url)
     {
+      Composite compositeData = new Composite("data");
+      
+      compositeData.add(new Attribute("address", address));
+      compositeData.add(new Attribute("data", data));
+      compositeData.add(new Attribute("type", "DATA"));
+      compositeData.add(new Attribute("source", url));
+      
+      routerService.process(compositeData);
       /// TODO: to route
     }
 }

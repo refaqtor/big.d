@@ -16,13 +16,13 @@ import vibe.core.net: NetworkAddress;
 class TestUDPServer: UDPServer
 {
   public:
-    this(in string host, in ushort port)
+    this(in string host, in ushort port, string url)
     {
-      super(host, port, toDelegate(&handle));
+      super(host, port, url, toDelegate(&handle));
     }
     
   private:
-    void handle(ubyte[] data, NetworkAddress address)
+    void handle(ubyte[] data, NetworkAddress address, string url)
     {}
 }
 
@@ -36,8 +36,8 @@ unittest
 
       when!"Add many udp servers"
       ({
-        auto firstUDPServer = new TestUDPServer("1", 3);
-        auto secondUDPServer = new TestUDPServer("2", 4);
+        auto firstUDPServer = new TestUDPServer("1", 3, "server1");
+        auto secondUDPServer = new TestUDPServer("2", 4, "server2");
         service.insertUDPServer("FirstUDPServer", firstUDPServer);
         service.insertUDPServer("SecondUDPServer", secondUDPServer);
 
@@ -75,7 +75,7 @@ unittest
     given!"Not empty UDPServerService"
     ({
       auto service = new UDPServerService();
-      auto server = new TestUDPServer("test", 11, );
+      auto server = new TestUDPServer("test", 11, "server1");
       service.insertUDPServer("Server", server);
 
       when!"Remove udp server"

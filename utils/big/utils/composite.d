@@ -43,6 +43,12 @@ class Component
     
     /// Return $(D true) if $(D Component) is $(D Composite) and $(D false) if $(D Attribute)
     abstract bool isComposite();
+    
+    /// Convert Object to a human readable string
+    override string toString()
+    {
+      return "Component(name: '%s')".format(getName()); 
+    }
 
   private:
     /// Name of component

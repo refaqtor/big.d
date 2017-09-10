@@ -43,7 +43,7 @@ final class RouterServiceInitManager
     *		configs = All configuration data for RouterServise
     */
     void initRouterService(Composite[] configs)
-    {
+    { 
       bigLog.info("RouterServiceInitManager: start init router service");
       foreach(Composite routerConfig; configs)
       {
@@ -100,5 +100,6 @@ final class RouterServiceInitManager
         routerService.addRoute(newRoute);
         bigLog.trace("RouterServiceInitManager: Route '" ~ to!string(newRoute) ~ "' was added to router service");
       }
+      bigLog.info("RouterServiceInitManager: router service initialization completed");
     }    
 }

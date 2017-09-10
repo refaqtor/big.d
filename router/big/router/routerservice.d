@@ -136,6 +136,7 @@ final class RouterService
       newMiddleware.middlewareName = middlewareName;
       newMiddleware.middlewareHandler = middlewareHandler;
       _middlewares ~= newMiddleware;
+      bigLog.info("RouterService: middleware '" ~ middlewareName ~ "' was added to router service");
     }
    
     ///You can add target by using this function
@@ -145,6 +146,7 @@ final class RouterService
       newTarget.targetName = targetName;
       newTarget.targetHandler = targetHandler;
       _targets ~= newTarget;
+      bigLog.info("RouterService: target '" ~ targetName ~ "' was added to router service");
     }
     
     ///You can add route by using this function
@@ -159,6 +161,7 @@ final class RouterService
       else
       {
         _routes ~= newRoute;
+        bigLog.info("RouterService: route '" ~ to!string(newRoute) ~ "' was added to router service");
       }
     }
     

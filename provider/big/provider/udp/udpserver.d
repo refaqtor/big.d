@@ -14,17 +14,18 @@ import std.string: format;
 class UDPServer
 {
   public:
-    alias UDPServerHandler = void delegate(ubyte[] data, NetworkAddress address);
+    alias UDPServerHandler = void delegate(ubyte[] data, NetworkAddress address, string url);
   
     /** A constructor for the $(D UDPServer).
     * Params:
     *   host = The host address of the UDP server.
     *   port = The port of the UDP server.
     */
-    this(in string host, in ushort port, UDPServerHandler handler)
+    this(in string host, in ushort port, in string url, UDPServerHandler handler)
     {
       _host = host;
       _port = port;
+      _url = url;
       _handler = handler;
     }
     
@@ -52,7 +53,7 @@ class UDPServer
         while(_isStart)
         {
   			  auto data = _connection.recv(null, &peerAddress);
-  			  _handler(data, peerAddress);
+  			  _handler(data, peerAddress, _url);
   		  }
       });                                
     }
@@ -68,6 +69,8 @@ class UDPServer
     string _host;
     /// UDP port of UDP server
     ushort _port;
+    /// url of UDP server
+    string _url;
     /// $(D UDPConnection) for communication between UDP clients and server
     UDPConnection _connection;
     /// Status of running. If UDPServer is start = true.
