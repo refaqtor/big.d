@@ -66,7 +66,7 @@ final class AQMPClientServiceInitManager
     void initAQMPClientService(Composite[] configs)
     {        
       foreach(Composite aqmpClientConfig; configs)
-      {         
+      {                
         auto urlAttribute = aqmpClientConfig.get!Attribute(AQMP_CLIENT_SERVICE_URL);
         if(urlAttribute is null)
         {
