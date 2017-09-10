@@ -47,10 +47,10 @@ class ConfigService
              in configuration files will be searched)
     */
     void subscribe(string name, ConfigHandler handler, InitPriority priority = InitPriority.NORMAL)
-    { 
+    {      
       _handlersMap[name] ~= handler;
       _configDataMap[name] = [];
-      _priorityMap[priority] = [name];
+      _priorityMap[priority] ~= [name];
     }
     
     /** This method reads all the configs for all services in the specified directory

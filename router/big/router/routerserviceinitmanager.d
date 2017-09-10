@@ -16,7 +16,7 @@ import std.functional: toDelegate;
 enum
 {
   /// String name for load from config file
-  ROUTE_CONFIG_TYPE = "Rout",
+  ROUTE_CONFIG_TYPE = "Route",
   /// String name of source defenition
   ROUTE_SOURCE = "source",
   /// String name of type defenition
@@ -43,14 +43,16 @@ final class RouterServiceInitManager
     *		configs = All configuration data for RouterServise
     */
     void initRouterService(Composite[] configs)
-    {      
+    {
+      bigLog.info("RouterServiceInitManager: start init router service");
       foreach(Composite routerConfig; configs)
       {
+        bigLog.trace("RouterServiceInitManager: parse route '" ~ to!string(routerConfig) ~ "'");
         auto sourceAttribute = routerConfig.get!Attribute(ROUTE_SOURCE);
         string source;
         if(sourceAttribute is null)
         {
-          bigLog.warning("Route without 'source' will be ignored! Check your config!");
+          bigLog.warning("RouterServiceInitManager: Route without 'source' will be ignored! Check your config!");
           continue;
         }
         else
@@ -62,7 +64,7 @@ final class RouterServiceInitManager
         string type;
         if(typeAttribute is null)
         {
-          bigLog.warning("Route without 'type' will be ignored! Check your config!");
+          bigLog.warning("RouterServiceInitManager: Route without 'type' will be ignored! Check your config!");
           continue;
         }
         else
@@ -74,7 +76,7 @@ final class RouterServiceInitManager
         string target;
         if(targetAttribute is null)
         {
-          bigLog.warning("Route without 'target' will be ignored! Check your config!");
+          bigLog.warning("RouterServiceInitManager: Route without 'target' will be ignored! Check your config!");
           continue;
         }
         else
@@ -96,7 +98,7 @@ final class RouterServiceInitManager
         newRoute.middleware = middleware;
         
         routerService.addRoute(newRoute);
-        bigLog.info("Route '" ~ to!string(newRoute) ~ "' was added to router service");
+        bigLog.trace("RouterServiceInitManager: Route '" ~ to!string(newRoute) ~ "' was added to router service");
       }
     }    
 }

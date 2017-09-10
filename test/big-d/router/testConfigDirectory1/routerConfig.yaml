@@ -1,32 +1,32 @@
-- Rout:
+- Route:
   - source: sorceRegex
   - target: targetRegex
   - type: typeRegex
   - middleware: middlewareRegex
   
-- Rout:
+- Route:
   - target: targetRegex
   - type: typeRegex
   - middleware: middlewareRegex
   
-- Rout:
+- Route:
   - source: sorceRegex
   - type: typeRegex
   - middleware: middlewareRegex
   
-- Rout:
+- Route:
   - source: sorceRegex
   - target: targetRegex
   - middleware: middlewareRegex
 
-- Rout:
+- Route:
   - source: sorceRegex1 #this value will be ignored...
   - source: sorceRegex2
   - target: targetRegex
   - type: typeRegex
   - middleware: middlewareRegex
   
-- Rout:
+- Route:
   - source: sorceRegex
   - target: targetRegex
   - type: typeRegex
